@@ -4,6 +4,8 @@ Personal skills for this project. Each skill lives in its own folder with a `SKI
 
 ## Currently installed
 
+### Aesthetic & Frontend
+
 ### `design-taste-frontend/`
 Senior UI/UX engineering rulebook. Anti-AI-slop guardrails, deterministic typography (Geist/Satoshi/Cabinet Grotesk — Inter is BANNED), Tailwind/React conventions, Framer Motion spring physics, Bento 2.0 architecture. Has dial-based config (DESIGN_VARIANCE=8, MOTION_INTENSITY=6, VISUAL_DENSITY=4). **Always-on engineering rulebook** — applies on top of any visual aesthetic.
 
@@ -12,6 +14,19 @@ Raw mechanical interfaces fusing Swiss typographic print with military terminal 
 
 ### `minimalist-ui/`
 Premium editorial minimalism (Notion-tier). Warm monochrome palette, bento grids, muted pastel accents, no shadows/gradients/emojis, no AI copywriting clichés. Lyon Text + Geist Sans. Document-style interfaces.
+
+### PRD Lifecycle (workflow system — three skills work together)
+
+All three write to `docs/` with the convention: `docs/00_SYSTEM_MANIFEST.md`, `docs/INDEX.md`, and per-feature `docs/features/prd-NNN-name.md`.
+
+### `prd-reverse-engineer/`
+**Code → Docs.** Audit the existing codebase, generate a System Manifest + per-feature PRDs documenting what's actually built. No hallucinations — only what the code does.
+
+### `prd-plan-new-feature/`
+**Idea → Docs.** Draft a PRD for a proposed feature that fits the existing architecture (reads the System Manifest first). Output includes objective, user stories, integration points, and a coding checklist.
+
+### `prd-sync/`
+**Maintenance.** Scan recent code changes, find the corresponding PRD, update it so the docs never lie. Code is king — if the code says B and the PRD says A, the PRD changes.
 
 ## When to load
 
