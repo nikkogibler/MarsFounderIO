@@ -15,6 +15,21 @@ Raw mechanical interfaces fusing Swiss typographic print with military terminal 
 ### `minimalist-ui/`
 Premium editorial minimalism (Notion-tier). Warm monochrome palette, bento grids, muted pastel accents, no shadows/gradients/emojis, no AI copywriting clichés. Lyon Text + Geist Sans. Document-style interfaces.
 
+### Animation
+
+### `gsap-core/`
+Official GSAP core API reference. Tweens (`gsap.to/from/fromTo/set`), eases, stagger, transform aliases, defaults, `gsap.matchMedia()` for responsive + `prefers-reduced-motion`. The framework-agnostic animation engine.
+
+### `gsap-scrolltrigger/`
+Official GSAP ScrollTrigger reference. Scroll-linked animations, pinning, scrub, batched callbacks, smooth-scroll proxy, horizontal containerAnimation. The right tool for full-page scrollytelling.
+
+**Coordination rule (from `design-taste-frontend`):** Framer Motion for component-level UI/Bento interactions. GSAP exclusively for full-page scrollytelling or canvas backgrounds, isolated in their own components with strict useEffect cleanup. **Never mix GSAP and Framer Motion in the same component tree.**
+
+### Quality
+
+### `optimize/`
+Performance/optimization audit checklist. Bottlenecks, memory leaks, algorithm improvements, caching, concurrency. Run as a quality gate after major builds.
+
 ### PRD Lifecycle (workflow system — three skills work together)
 
 All three write to `docs/` with the convention: `docs/00_SYSTEM_MANIFEST.md`, `docs/INDEX.md`, and per-feature `docs/features/prd-NNN-name.md`.
