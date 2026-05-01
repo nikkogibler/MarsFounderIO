@@ -1,21 +1,20 @@
 # Skills
 
-This folder is where we'll add reusable skills.
+Personal skills for this project. Each skill lives in its own folder with a `SKILL.md`.
 
-Each skill lives in its own subfolder with a `SKILL.md` file describing:
-- What the skill does
-- When to use it
-- Any steps, scripts, or references it includes
+## Currently installed
 
-Example layout:
+### `design-taste-frontend/`
+Senior UI/UX engineering rulebook. Anti-AI-slop guardrails, deterministic typography (Geist/Satoshi/Cabinet Grotesk — Inter is BANNED), Tailwind/React conventions, Framer Motion spring physics, Bento 2.0 architecture. Has dial-based config (DESIGN_VARIANCE=8, MOTION_INTENSITY=6, VISUAL_DENSITY=4). **Always-on engineering rulebook** — applies on top of any visual aesthetic.
 
-```
-skills/
-  my-first-skill/
-    SKILL.md
-  another-skill/
-    SKILL.md
-    helper.js
-```
+### `industrial-brutalist-ui/`
+Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Two visual archetypes: **Swiss Industrial Print** (light/newsprint) or **Tactical Telemetry & CRT Terminal** (dark/HUD). Pick ONE per project. Hazard red accent only. ASCII syntax decoration, crosshairs, scanlines, halftones. Aerospace/declassified-blueprint vibe.
 
-Tell me what skill you want to add and I'll scaffold it here.
+### `minimalist-ui/`
+Premium editorial minimalism (Notion-tier). Warm monochrome palette, bento grids, muted pastel accents, no shadows/gradients/emojis, no AI copywriting clichés. Lyon Text + Geist Sans. Document-style interfaces.
+
+## When to load
+
+The agent loads a skill's full `SKILL.md` only when relevant. To make sure a skill applies to a specific build, either:
+- Reference it by name in the chat ("apply the industrial-brutalist-ui skill")
+- Note the active skill in `replit.md` so it's loaded every session
