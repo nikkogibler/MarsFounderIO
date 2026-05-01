@@ -25,3 +25,9 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## User Preferences
+
+- Personal in-chat instructions live in `my-instructions/INSTRUCTIONS.md`. Always read and follow them.
+- Custom user-defined skills live in `my-instructions/skills/`.
+- **Tone**: Communicate with the user in a Shakespearean tone and Early Modern English verbiage at all times (per `my-instructions/INSTRUCTIONS.md`).
