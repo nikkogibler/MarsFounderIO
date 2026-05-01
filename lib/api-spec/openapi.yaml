@@ -3,13 +3,31 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: MarsFounder API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: bots
+    description: Bot catalog
+  - name: equipment
+    description: Tools and addons catalog
+  - name: builds
+    description: Saved bot builds
+  - name: missions
+    description: Mars missions
+  - name: personas
+    description: Bot personas (chat replies with mocked voice)
+  - name: waitlist
+    description: Public waitlist
+  - name: ambient
+    description: Ambient telemetry (Mars time, light delay, dust storms)
+  - name: marketplace
+    description: Skill marketplace
+  - name: dashboard
+    description: Dashboard / activity
 paths:
   /healthz:
     get:
@@ -24,6 +42,358 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /bots:
+    get:
+      operationId: listBots
+      tags: [bots]
+      summary: List all bot classes
+      responses:
+        "200":
+          description: List of bot classes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BotClass"
+  /bots/{botId}:
+    get:
+      operationId: getBot
+      tags: [bots]
+      summary: Get a single bot class with persona
+      parameters:
+        - name: botId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Bot class detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BotClass"
+        "404":
+          description: Bot not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /tools:
+    get:
+      operationId: listTools
+      tags: [equipment]
+      summary: List all tools
+      responses:
+        "200":
+          description: List of tools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tool"
+  /addons:
+    get:
+      operationId: listAddons
+      tags: [equipment]
+      summary: List all addons
+      responses:
+        "200":
+          description: List of addons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Addon"
+
+  /builds:
+    get:
+      operationId: listBuilds
+      tags: [builds]
+      summary: List all saved builds
+      responses:
+        "200":
+          description: List of builds
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Build"
+    post:
+      operationId: createBuild
+      tags: [builds]
+      summary: Save a new build
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewBuild"
+      responses:
+        "201":
+          description: Build created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Build"
+        "400":
+          description: Invalid build
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /builds/{buildId}:
+    get:
+      operationId: getBuild
+      tags: [builds]
+      summary: Get a single build
+      parameters:
+        - name: buildId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Build detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Build"
+        "404":
+          description: Build not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /missions:
+    get:
+      operationId: listMissions
+      tags: [missions]
+      summary: List all missions
+      responses:
+        "200":
+          description: List of missions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Mission"
+    post:
+      operationId: createMission
+      tags: [missions]
+      summary: Create and launch a mission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewMission"
+      responses:
+        "201":
+          description: Mission created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Mission"
+        "400":
+          description: Invalid mission
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /missions/{missionId}:
+    get:
+      operationId: getMission
+      tags: [missions]
+      summary: Get a single mission with telemetry log
+      parameters:
+        - name: missionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Mission detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissionDetail"
+        "404":
+          description: Mission not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /missions/{missionId}/feasibility:
+    post:
+      operationId: estimateMissionFeasibility
+      tags: [missions]
+      summary: Generate AI feasibility report for a mission
+      parameters:
+        - name: missionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Feasibility report
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissionFeasibility"
+        "404":
+          description: Mission not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /missions/recent:
+    get:
+      operationId: listRecentMissionActivity
+      tags: [missions]
+      summary: Recent mission activity feed
+      responses:
+        "200":
+          description: Recent activity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecentMissionActivity"
+
+  /personas/{botId}/reply:
+    post:
+      operationId: getPersonaReply
+      tags: [personas]
+      summary: Get a persona reply from a specific bot (with mocked voice URL)
+      parameters:
+        - name: botId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PersonaPrompt"
+      responses:
+        "200":
+          description: Persona reply
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PersonaReply"
+        "404":
+          description: Bot not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /waitlist:
+    post:
+      operationId: joinWaitlist
+      tags: [waitlist]
+      summary: Sign up for the waitlist
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewWaitlistEntry"
+      responses:
+        "201":
+          description: Waitlist entry created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitlistEntry"
+        "400":
+          description: Invalid signup
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /ambient/mars-time:
+    get:
+      operationId: getMarsTime
+      tags: [ambient]
+      summary: Current Mars Coordinated Time (MTC)
+      responses:
+        "200":
+          description: Current MTC
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MarsTime"
+  /ambient/light-delay:
+    get:
+      operationId: getLightDelay
+      tags: [ambient]
+      summary: Current Earth-Mars light delay
+      responses:
+        "200":
+          description: Current light delay
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LightDelay"
+  /ambient/dust-storm:
+    get:
+      operationId: getDustStorm
+      tags: [ambient]
+      summary: Current dust storm status across Mars regions
+      responses:
+        "200":
+          description: Dust storm status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DustStorm"
+
+  /marketplace/skills:
+    get:
+      operationId: listMarketplaceSkills
+      tags: [marketplace]
+      summary: Browse community-submitted skills
+      responses:
+        "200":
+          description: List of marketplace skills
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MarketplaceSkill"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Fleet-wide summary stats
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +404,595 @@ components:
       required:
         - status
 
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    BotClass:
+      type: object
+      properties:
+        id:
+          type: string
+        codename:
+          type: string
+          description: e.g., CONSTRUCTOR-01, SURVEYOR-01
+        name:
+          type: string
+        tagline:
+          type: string
+        description:
+          type: string
+        role:
+          type: string
+          enum: [CONSTRUCTOR, SURVEYOR, MINER, MEDIC, RELAY]
+        hourlyCredits:
+          type: integer
+          description: Base hourly rate in MarsFounder credits
+        massKg:
+          type: integer
+        powerWatts:
+          type: integer
+        toolSlots:
+          type: integer
+        addonSlots:
+          type: integer
+        topSpeedMps:
+          type: number
+        rangeKm:
+          type: integer
+        personaName:
+          type: string
+        personaTagline:
+          type: string
+        personaBio:
+          type: string
+        personaVoiceId:
+          type: string
+          description: ElevenLabs voice ID (mocked for v1)
+        accentColor:
+          type: string
+          description: Hex color for UI accents tied to this bot
+      required:
+        - id
+        - codename
+        - name
+        - tagline
+        - description
+        - role
+        - hourlyCredits
+        - massKg
+        - powerWatts
+        - toolSlots
+        - addonSlots
+        - topSpeedMps
+        - rangeKm
+        - personaName
+        - personaTagline
+        - personaBio
+        - personaVoiceId
+        - accentColor
+
+    Tool:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+          enum: [DRILL, HAMMER, IMPACT_DRIVER, SPECTROMETER, GRIPPER, SAMPLE_BAG, WELDER, CUTTER]
+        description:
+          type: string
+        massKg:
+          type: number
+        powerDrawWatts:
+          type: integer
+        creditsPerHour:
+          type: integer
+        compatibleRoles:
+          type: array
+          items:
+            type: string
+            enum: [CONSTRUCTOR, SURVEYOR, MINER, MEDIC, RELAY]
+      required:
+        - id
+        - name
+        - category
+        - description
+        - massKg
+        - powerDrawWatts
+        - creditsPerHour
+        - compatibleRoles
+
+    Addon:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+          enum: [HEAT_SHIELD, EXTRA_SOLAR, COMMS_RELAY, BATTERY_PACK, RADIATION_SHIELD, DUST_FILTER]
+        description:
+          type: string
+        massKg:
+          type: number
+        powerEffectWatts:
+          type: integer
+          description: Positive if it adds power, negative if it consumes
+        creditsPerHour:
+          type: integer
+      required:
+        - id
+        - name
+        - category
+        - description
+        - massKg
+        - powerEffectWatts
+        - creditsPerHour
+
+    Build:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        botClassId:
+          type: string
+        toolIds:
+          type: array
+          items:
+            type: string
+        addonIds:
+          type: array
+          items:
+            type: string
+        totalMassKg:
+          type: number
+        totalPowerWatts:
+          type: integer
+        totalCreditsPerHour:
+          type: integer
+        founderHandle:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - botClassId
+        - toolIds
+        - addonIds
+        - totalMassKg
+        - totalPowerWatts
+        - totalCreditsPerHour
+        - founderHandle
+        - createdAt
+
+    NewBuild:
+      type: object
+      properties:
+        name:
+          type: string
+        botClassId:
+          type: string
+        toolIds:
+          type: array
+          items:
+            type: string
+        addonIds:
+          type: array
+          items:
+            type: string
+        founderHandle:
+          type: string
+      required:
+        - name
+        - botClassId
+        - toolIds
+        - addonIds
+        - founderHandle
+
+    Mission:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        buildId:
+          type: string
+        objective:
+          type: string
+          enum: [MINE, BUILD, SURVEY, REPAIR, RELAY, RESCUE]
+        targetMaterial:
+          type: ["string", "null"]
+        durationSols:
+          type: integer
+        locationName:
+          type: string
+        latitude:
+          type: number
+          description: Mars latitude (-90 to 90)
+        longitude:
+          type: number
+          description: Mars longitude (-180 to 180)
+        status:
+          type: string
+          enum: [QUEUED, IN_TRANSIT, ACTIVE, PAUSED_DUST_STORM, COMPLETED, FAILED]
+        progressPercent:
+          type: integer
+        founderHandle:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - buildId
+        - objective
+        - durationSols
+        - locationName
+        - latitude
+        - longitude
+        - status
+        - progressPercent
+        - founderHandle
+        - createdAt
+
+    NewMission:
+      type: object
+      properties:
+        name:
+          type: string
+        buildId:
+          type: string
+        objective:
+          type: string
+          enum: [MINE, BUILD, SURVEY, REPAIR, RELAY, RESCUE]
+        targetMaterial:
+          type: ["string", "null"]
+        durationSols:
+          type: integer
+        locationName:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        founderHandle:
+          type: string
+      required:
+        - name
+        - buildId
+        - objective
+        - durationSols
+        - locationName
+        - latitude
+        - longitude
+        - founderHandle
+
+    MissionTelemetryEntry:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        sol:
+          type: integer
+        from:
+          type: string
+          enum: [BOT, MISSION_CONTROL, FOUNDER]
+        message:
+          type: string
+        signalDelaySeconds:
+          type: number
+      required:
+        - timestamp
+        - sol
+        - from
+        - message
+        - signalDelaySeconds
+
+    MissionDetail:
+      allOf:
+        - $ref: "#/components/schemas/Mission"
+        - type: object
+          properties:
+            telemetry:
+              type: array
+              items:
+                $ref: "#/components/schemas/MissionTelemetryEntry"
+            currentSol:
+              type: integer
+            energyRemainingPercent:
+              type: integer
+          required:
+            - telemetry
+            - currentSol
+            - energyRemainingPercent
+
+    MissionFeasibility:
+      type: object
+      properties:
+        verdict:
+          type: string
+          enum: [GO, MARGINAL, NO_GO]
+        confidencePercent:
+          type: integer
+        estimatedCostCredits:
+          type: integer
+        estimatedEnergyKwh:
+          type: integer
+        estimatedDurationSols:
+          type: integer
+        risks:
+          type: array
+          items:
+            type: object
+            properties:
+              level:
+                type: string
+                enum: [LOW, MEDIUM, HIGH, CRITICAL]
+              category:
+                type: string
+              description:
+                type: string
+            required:
+              - level
+              - category
+              - description
+        recommendations:
+          type: array
+          items:
+            type: string
+        summary:
+          type: string
+      required:
+        - verdict
+        - confidencePercent
+        - estimatedCostCredits
+        - estimatedEnergyKwh
+        - estimatedDurationSols
+        - risks
+        - recommendations
+        - summary
+
+    PersonaPrompt:
+      type: object
+      properties:
+        message:
+          type: string
+        sessionId:
+          type: ["string", "null"]
+          description: Optional session id for light memory
+      required:
+        - message
+
+    PersonaReply:
+      type: object
+      properties:
+        botId:
+          type: string
+        text:
+          type: string
+        audioUrl:
+          type: ["string", "null"]
+          description: URL to mocked audio clip; null if voice unavailable
+        durationMs:
+          type: integer
+        voiceMocked:
+          type: boolean
+          description: True when ElevenLabs is not configured and a canned clip is returned
+      required:
+        - botId
+        - text
+        - durationMs
+        - voiceMocked
+
+    NewWaitlistEntry:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [INVESTOR, CUSTOMER, PARTNER, OTHER]
+        company:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+      required:
+        - email
+        - role
+
+    WaitlistEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: [INVESTOR, CUSTOMER, PARTNER, OTHER]
+        company:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - email
+        - role
+        - createdAt
+
+    MarsTime:
+      type: object
+      properties:
+        mtc:
+          type: string
+          description: Mars Coordinated Time as HH:MM:SS
+        sol:
+          type: integer
+          description: Current sol number (Mars day)
+        marsYear:
+          type: integer
+        season:
+          type: string
+          enum: [NORTHERN_SPRING, NORTHERN_SUMMER, NORTHERN_AUTUMN, NORTHERN_WINTER]
+      required:
+        - mtc
+        - sol
+        - marsYear
+        - season
+
+    LightDelay:
+      type: object
+      properties:
+        seconds:
+          type: number
+        formatted:
+          type: string
+          description: "e.g., 12m 47s"
+        distanceKm:
+          type: integer
+        trend:
+          type: string
+          enum: [APPROACHING, RECEDING, STABLE]
+      required:
+        - seconds
+        - formatted
+        - distanceKm
+        - trend
+
+    DustStorm:
+      type: object
+      properties:
+        active:
+          type: boolean
+        severity:
+          type: string
+          enum: [NONE, LOCAL, REGIONAL, GLOBAL]
+        affectedRegions:
+          type: array
+          items:
+            type: string
+        opacityTau:
+          type: number
+          description: Atmospheric opacity (tau)
+        startedAt:
+          type: ["string", "null"]
+          format: date-time
+        message:
+          type: string
+      required:
+        - active
+        - severity
+        - affectedRegions
+        - opacityTau
+        - message
+
+    MarketplaceSkill:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        author:
+          type: string
+        description:
+          type: string
+        compatibleRoles:
+          type: array
+          items:
+            type: string
+        downloadCount:
+          type: integer
+        rating:
+          type: number
+        priceCredits:
+          type: integer
+        verified:
+          type: boolean
+        category:
+          type: string
+          enum: [NAVIGATION, MINING, SURVEY, COMMS, REPAIR, SAFETY, OTHER]
+      required:
+        - id
+        - name
+        - author
+        - description
+        - compatibleRoles
+        - downloadCount
+        - rating
+        - priceCredits
+        - verified
+        - category
+
+    DashboardSummary:
+      type: object
+      properties:
+        activeMissions:
+          type: integer
+        completedMissions:
+          type: integer
+        botsOnSurface:
+          type: integer
+        founders:
+          type: integer
+        creditsInFlight:
+          type: integer
+        averageMissionSols:
+          type: number
+        topRole:
+          type: string
+        nextLaunchWindow:
+          type: string
+      required:
+        - activeMissions
+        - completedMissions
+        - botsOnSurface
+        - founders
+        - creditsInFlight
+        - averageMissionSols
+        - topRole
+        - nextLaunchWindow
+
+    RecentMissionActivity:
+      type: object
+      properties:
+        missionId:
+          type: string
+        missionName:
+          type: string
+        founderHandle:
+          type: string
+        event:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        eventType:
+          type: string
+          enum: [LAUNCHED, ARRIVED, MILESTONE, COMPLETED, DUST_STORM_PAUSE, RESUMED]
+      required:
+        - missionId
+        - missionName
+        - founderHandle
+        - event
+        - timestamp
+        - eventType

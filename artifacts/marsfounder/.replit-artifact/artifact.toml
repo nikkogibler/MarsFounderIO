@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "MarsFounder"
+version = "1.0.0"
+id = "artifacts/marsfounder"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21526
+
+[services.development]
+run = "pnpm --filter @workspace/marsfounder run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/marsfounder", "run", "build" ]
+publicDir = "artifacts/marsfounder/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21526"
+BASE_PATH = "/"

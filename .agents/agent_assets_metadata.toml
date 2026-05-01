@@ -1,0 +1,14 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "I1aQg1LuElnnyuekSSgjj"
+uri = "file://artifacts/marsfounder/public/hero-bg.png"
+type = "image"
+title = "Mars surface with robot silhouette"
+
+[[generated]]
+id = "-1g4Lcya46kcjd1SCOqqv"
+uri = "file://artifacts/marsfounder/public/bot-bg.png"
+type = "image"
+title = "Industrial robot close up"
