@@ -30,6 +30,14 @@ Official GSAP ScrollTrigger reference. Scroll-linked animations, pinning, scrub,
 ### `optimize/`
 Performance/optimization audit checklist. Bottlenecks, memory leaks, algorithm improvements, caching, concurrency. Run as a quality gate after major builds.
 
+### Tooling / Meta
+
+### `browser-use/`
+Browser automation CLI (`browser-use` command). Persistent headless/headed Chromium with ~50ms latency. Navigate, inspect via element indices, click/type/upload, screenshot, run JS, wait for selectors, manage cookies, persistent Python session. Good for scraping, web testing, and form automation outside Replit's existing Playwright-based testing skill. **Note:** requires the `browser-use` CLI to be installed locally; overlaps with Replit's built-in `testing` skill (Playwright) — prefer `testing` for in-app e2e tests, `browser-use` for arbitrary external sites.
+
+### `autoresearch/`
+**Meta-skill** — autonomous self-improvement loop for other skills (Karpathy-style autoresearch). Runs a target skill repeatedly against test inputs, scores outputs against binary yes/no evals, mutates the prompt, keeps wins, discards losses. Outputs an improved `SKILL.md`, `results.tsv` log, `changelog.md`, and a live HTML dashboard. Use when a skill works "70% of the time" and you want to grind that ceiling up. References `references/eval-guide.md` for how to write evals that actually work. **Note:** authored for Claude Code — `open dashboard.html` (macOS) and `view_image` references will need lightweight adapting for Replit; the methodology is portable.
+
 ### PRD Lifecycle (workflow system — three skills work together)
 
 All three write to `docs/` with the convention: `docs/00_SYSTEM_MANIFEST.md`, `docs/INDEX.md`, and per-feature `docs/features/prd-NNN-name.md`.
