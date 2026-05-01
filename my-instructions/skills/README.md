@@ -30,6 +30,19 @@ Official GSAP ScrollTrigger reference. Scroll-linked animations, pinning, scrub,
 ### `optimize/`
 Performance/optimization audit checklist. Bottlenecks, memory leaks, algorithm improvements, caching, concurrency. Run as a quality gate after major builds.
 
+### Copywriting
+
+### `humanizer/`
+Strip AI-generated writing tells out of text. Based on Wikipedia's "Signs of AI writing" guide. Detects and rewrites: inflated significance/legacy claims, promotional puffery, superficial `-ing` analyses, vague attributions, em-dash overuse, rule of three, AI vocabulary words (`delve`, `tapestry`, `pivotal`, `underscore`, etc.), passive voice, negative parallelisms, copula avoidance, false ranges, elegant variation. Includes a "voice calibration" mode where you feed it a sample of your own writing for tone matching, plus a "personality and soul" pass that adds opinions, varied rhythm, and edge instead of just stripping bad patterns.
+
+### Session Continuity (paired skills)
+
+### `handoff/`
+Write a date-stamped continuation-grade markdown handoff doc so another agent (or future-you) can resume work without rebuilding context from chat. Strict filename convention (`YYYY-MM-DD-HHMM_CATEGORY_artifact-slug_session-handoff.md` with categories like `DEBUG_`, `NEWFEATURE_`, `EXPERIMENT_`, `IMPROVEMENT_`). Required structure: metadata, purpose, final state, files changed, decisions, validation status, current state to preserve, next steps, short continuation summary. Verification discipline: only mark facts as verified if they actually were.
+
+### `resume-from-handoff/`
+Receiving-side counterpart. Reads a handoff markdown, extracts actionable context, **verifies the important referenced files** before editing (handoff is orientation, not gospel), summarizes a compact import brief, then continues work. Calls out stale claims, falls back to live workspace state when handoff is outdated, preserves listed constraints unless overridden.
+
 ### Tooling / Meta
 
 ### `browser-use/`
