@@ -1,0 +1,9 @@
+{
+  "buildCommand": "pnpm --filter @workspace/marsfounder run build",
+  "outputDirectory": "artifacts/marsfounder/dist/public",
+  "installCommand": "pnpm install",
+  "framework": null,
+  "rewrites": [
+    { "source": "/((?!assets/).*)", "destination": "/index.html" }
+  ]
+}
