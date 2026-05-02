@@ -51,7 +51,14 @@ app.use(
     },
   }),
 );
-app.use(cors());
+const corsOrigin = process.env["CORS_ORIGIN"];
+app.use(
+  cors(
+    corsOrigin
+      ? { origin: corsOrigin.split(",").map((o) => o.trim()) }
+      : undefined,
+  ),
+);
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
