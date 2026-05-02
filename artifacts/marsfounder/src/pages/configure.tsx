@@ -152,7 +152,7 @@ export default function Configure() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         
         {/* Left Rail: Saved Builds */}
-        <div className="col-span-1 border border-border bg-card/30 flex flex-col h-[calc(100vh-250px)] sticky top-24">
+        <div className="col-span-1 border border-border bg-card/30 flex flex-col lg:h-[calc(100vh-250px)] lg:sticky lg:top-24">
           <div className="p-4 border-b border-border bg-background/50">
             <h3 className="font-sans font-black uppercase tracking-tight">SAVED BUILDS</h3>
           </div>
@@ -292,7 +292,7 @@ export default function Configure() {
         </div>
 
         {/* Right Rail: HUD & Save */}
-        <div className="col-span-1 border border-border bg-background flex flex-col h-[calc(100vh-250px)] sticky top-24 shadow-[0_0_30px_rgba(204,68,34,0.1)]">
+        <div className="col-span-1 border border-border bg-background flex flex-col lg:h-[calc(100vh-250px)] lg:sticky lg:top-24 shadow-[0_0_30px_rgba(204,68,34,0.1)]">
           <div className="p-4 border-b border-border bg-primary text-primary-foreground">
               <h3 className="font-sans font-black uppercase tracking-tight">BUILD SUMMARY</h3>
           </div>

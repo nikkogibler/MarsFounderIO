@@ -118,17 +118,17 @@ export default function Home() {
           <div className="inline-block border border-primary text-primary px-3 py-1 text-xs font-mono mb-8 tracking-widest bg-primary/10">
             SYSTEM INITIALIZED • CONNECTION ESTABLISHED
           </div>
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
             Robotic Labor<br/>For Mars
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground font-mono max-w-3xl mb-12">
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-mono max-w-3xl mb-10 sm:mb-12 px-2 sm:px-0">
             MarsFounder operates surface-ready robotic assets for construction, survey, extraction, repair, and communications missions.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/bots" className="bg-primary hover:bg-accent hover:text-primary-foreground text-primary-foreground px-8 py-4 font-bold font-mono uppercase tracking-widest transition-all duration-300 border border-primary hover:border-accent shadow-[0_0_20px_rgba(204,68,34,0.3)]">
+          <div className="flex flex-wrap gap-4 justify-center px-4 sm:px-0">
+            <Link href="/bots" className="bg-primary hover:bg-accent hover:text-primary-foreground text-primary-foreground px-6 sm:px-8 py-4 font-bold font-mono uppercase tracking-widest transition-all duration-300 border border-primary hover:border-accent shadow-[0_0_20px_rgba(204,68,34,0.3)] min-h-[44px]">
               View Fleet
             </Link>
-            <Link href="/waitlist" className="bg-transparent hover:bg-primary/10 text-foreground px-8 py-4 font-bold font-mono uppercase tracking-widest transition-all duration-300 border border-border hover:border-primary">
+            <Link href="/waitlist" className="bg-transparent hover:bg-primary/10 text-foreground px-6 sm:px-8 py-4 font-bold font-mono uppercase tracking-widest transition-all duration-300 border border-border hover:border-primary min-h-[44px]">
               Join Waitlist
             </Link>
           </div>
@@ -170,7 +170,7 @@ export default function Home() {
         <div className="container mx-auto px-6 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 reveal-item">
             <div>
-              <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Available Chassis</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Available Chassis</h2>
               <p className="font-mono text-muted-foreground">5 ASSET CLASSES. CONFIGURABLE MISSION LOADOUTS.</p>
             </div>
             <Link href="/configure" className="text-primary font-mono text-sm hover:text-accent tracking-widest mt-4 md:mt-0 flex items-center gap-2">
@@ -208,7 +208,7 @@ export default function Home() {
       <section className="py-32 reveal-section bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20" />
         <div className="container mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 reveal-item">Plan the next surface operation</h2>
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 reveal-item">Plan the next surface operation</h2>
           <p className="font-mono text-xl max-w-2xl mx-auto mb-12 opacity-80 reveal-item">
             Request access to evaluate robotic capacity, mission feasibility, and surface operations planning.
           </p>

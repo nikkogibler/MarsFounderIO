@@ -282,7 +282,7 @@ export default function MissionNew() {
         </form>
       </div>
 
-      <div className="lg:w-1/3 flex flex-col gap-6 sticky top-24 self-start">
+      <div className="lg:w-1/3 flex flex-col gap-6 lg:sticky lg:top-24 lg:self-start">
         <MarsParcelGlobe
           parcels={parcels}
           latitude={latitude}
