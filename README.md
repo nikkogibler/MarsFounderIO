@@ -1,56 +1,65 @@
-# MarsFounder.io: The Robotic-First Mars Pre-deployment Platform
+# MarsFounder.io
 
-## Vision: Establishing a "Turnkey Civilization"
-Based on the **"Robotic Mars Pre-Deployment Program Projection,"** this repository represents the software infrastructure for **MarsFounder.io**. 
+**The robotic-first Mars pre-deployment platform.**
 
-The core philosophy is a **Robots-First Doctrine**: recognizing that biological vulnerability is the primary bottleneck in planetary colonization. This platform is designed to manage a 50-year strategic window of autonomous and teleoperated pre-deployment, building an integrated planetary network of power, compute, and life-support infrastructure—a "Turnkey Civilization" that awaits human arrival as a completed utility.
+> Deploy robotic fleets to Mars, configure missions, and build the infrastructure for a Turnkey Civilization — before humans ever set foot on the surface.
+
+🌐 **Live:** [marsfounder-io.vercel.app](https://marsfounder-io.vercel.app)  
+📖 **Docs:** [documentation/](documentation/)  
+🤝 **Contributions welcome** — see [Contributing](#contributing)
 
 ---
 
-## What is being built?
-This codebase is a comprehensive **Mission Control and Ecosystem Management Platform**. It coordinates the deployment of robotic fleets, the acquisition of specialized AI "skills," and the monitoring of Martian infrastructure.
+## What is this?
 
-### Core Modules
-* **Mission Control Dashboard:** A real-time telemetry interface for tracking planetary infrastructure, power grids (Fission vs. Photon), and resource levels.
-* **Skill Marketplace:** A modular system for deploying AI Agents with specific capabilities (e.g., `audit-website`, `autoresearch`, `design-taste-frontend`). In the context of Mars, these represent the software payloads for specialized robotic hardware.
-* **Persona Engine:** An AI-driven interface (utilizing Anthropic's Claude) that allows founders to interact with specialized consultants and mission commanders.
-* **Telemetry & Environmental Simulation:** Systems built to handle Martian-specific constraints like **Light Delay** (telemetry lag) and environmental volatility (dust storms).
+MarsFounder.io is a mission control and ecosystem management platform built around a **Robots-First Doctrine**: autonomous robotic pre-deployment is the fastest path to a sustainable Mars civilization. This platform lets founders plan, configure, and track robotic missions — treating Martian surface operations as a product, not a science project.
+
+The core philosophy, drawn from the **"Robotic Mars Pre-Deployment Program Projection"**, is that biological vulnerability is the primary bottleneck in planetary colonization. The 50-year strategic window before human arrival should be used to build a complete planetary network of power, compute, and life-support infrastructure: a "Turnkey Civilization" that awaits human arrival as a finished utility.
+
+---
+
+## Features
+
+- **Mission Builder** — configure objectives, location, duration, and bot loadout before committing an asset to the surface
+- **Robotic Fleet Management** — browse bot classes by role, spec, and hourly credit burn; build custom loadouts with tools and add-ons
+- **AI Personas** — each bot class has a named AI persona; chat with your fleet commander before a mission
+- **Mission Feasibility Analysis** — AI-powered analysis flags risks before you deploy
+- **Skill Marketplace** — modular software payloads for robotic hardware
+- **Ambient Telemetry** — live Mars Sol Date, Earth–Mars light delay, and dust storm alerts
+- **Dashboard** — mission counts, build overview, and live telemetry summary
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 18, Vite 7, Tailwind CSS v4, Shadcn UI, Framer Motion, GSAP, Three.js |
+| Backend | Express 5, TypeScript, esbuild |
+| Database | Drizzle ORM + Neon (serverless PostgreSQL) |
+| AI | OpenRouter (`deepseek/deepseek-v4-flash`) |
+| Hosting | Vercel (frontend) + Hostinger VPS / Docker (API) |
+| Monorepo | pnpm workspaces |
 
 ---
 
 ## Project Structure
-This is a monorepo organized for high scalability and shared logic:
 
-```text
+```
 ├── artifacts/
-│   ├── marsfounder/      # The primary React/Vite/Tailwind Web Frontend
-│   ├── api-server/       # Node.js/TypeScript Backend (Mission telemetry, Bots, Personas)
-│   └── mockup-sandbox/   # UI Component development environment
+│   ├── marsfounder/      # React SPA (frontend)
+│   └── api-server/       # Express API server
 ├── lib/
-│   ├── api-spec/         # OpenAPI/Zod definitions for Mars-Earth communication
-│   ├── db/               # Drizzle ORM schemas for mission data and land registry
-│   ├── integrations/     # AI logic (Anthropic AI) for agent reasoning
-│   └── api-client-react/ # Generated hooks for frontend-backend sync
-├── .agents/              # Metadata and assets for the robotic agent fleet
-└── my-instructions/      # Domain-specific "Skills" (Knowledge bases for AI agents)
+│   ├── db/               # Drizzle ORM schema + client
+│   ├── api-spec/         # OpenAPI spec + Orval codegen
+│   ├── api-client-react/ # Generated TanStack Query hooks
+│   └── api-zod/          # Generated Zod validators
+├── documentation/        # Architecture, API reference, deployment, local dev
+├── vercel.json           # Vercel build config (frontend)
+└── Dockerfile            # Multi-stage Docker build (API)
 ```
 
----
-
-## Technical Stack
-* **Frontend:** React 18, Vite, Tailwind CSS, Shadcn UI, Framer Motion — deployed on **Vercel**
-* **Backend:** Node.js, Express 5, TypeScript — deployed on **Hostinger VPS** via Docker
-* **Database:** Drizzle ORM + **Neon serverless PostgreSQL**
-* **AI/LLM:** OpenRouter (`deepseek/deepseek-v4-flash`) for persona replies and mission feasibility analysis
-* **Package Management:** `pnpm` workspaces for efficient monorepo handling
-
----
-
-## Key Features
-1.  **Light Delay Compensation:** The API and Frontend are architected to simulate and manage the communication lag between Earth and Mars.
-2.  **Skill-Based Agent Architecture:** Unlike static bots, these agents are "hot-swappable" with skills. You can "upload" new capabilities to your robotic fleet via the marketplace.
-3.  **Planetary Grid Management:** Tools to track the transition from RTGs (Radioisotope Thermoelectric Generators) to multi-megawatt fission systems as described in the strategic projection.
-4.  **Onchain Land Registry:** Foundational logic for property rights and blockchain-based resource allocation on the Martian surface.
+Full documentation: [documentation/architecture.md](documentation/architecture.md)
 
 ---
 
@@ -140,4 +149,34 @@ curl http://localhost:3000/api/healthz
 ### CORS
 The API reads `CORS_ORIGIN` (comma-separated list of allowed origins). Set this to your Vercel domain(s). If unset, all origins are allowed (dev-only default).
 
+Full deployment guide: [documentation/deployment.md](documentation/deployment.md)
+
 ---
+
+## Contributing
+
+This project is open to collaborators. Whether you're interested in the product vision, the tech stack, or just want to build something meaningful — you're welcome here.
+
+### Good first contributions
+- UI/UX improvements to any page in `artifacts/marsfounder/src/pages/`
+- New bot class definitions (schema in `lib/db/src/schema/bots.ts`, seed in `lib/db/src/seed.ts`)
+- New ambient data endpoints (light delay accuracy, weather models)
+- Mission feasibility prompt tuning (`artifacts/api-server/src/lib/feasibility.ts`)
+- OpenAPI spec completeness (`lib/api-spec/openapi.yaml`)
+- Tests — there are none yet; any coverage is welcome
+
+### How to contribute
+1. Fork the repo and create a branch (`git checkout -b feat/your-idea`)
+2. Follow the local dev setup in [documentation/local-development.md](documentation/local-development.md)
+3. Make your changes and open a PR against `main`
+4. Describe what you built and why in the PR description
+
+### Reach out
+If you want to discuss the vision, a larger feature, or a collaboration before writing code — open a GitHub Discussion or reach out directly.
+
+---
+
+## License
+
+MIT
+
