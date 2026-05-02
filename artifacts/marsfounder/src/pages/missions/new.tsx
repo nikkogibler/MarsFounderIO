@@ -157,7 +157,7 @@ export default function MissionNew() {
                   value={missionBrief}
                   onChange={e => setMissionBrief(e.target.value)}
                   placeholder="Describe the mission objective, operating protocol, priority actions, constraints, and telemetry requirements."
-                  className="font-mono rounded-none border-border bg-card min-h-[180px] resize-y"
+                  className="font-mono rounded-none border-border bg-card min-h-45 resize-y"
                   maxLength={2200}
                 />
                 <div className="flex justify-between font-mono text-[10px] text-muted-foreground">
@@ -225,7 +225,7 @@ export default function MissionNew() {
                 step={1}
                 value={[durationSols]}
                 onValueChange={v => setDurationSols(v[0])}
-                className="py-4 [&_[role=slider]]:h-6 [&_[role=slider]]:w-3 [&_[role=slider]]:rounded-none [&_[role=slider]]:bg-primary [&_[role=slider]]:border-none"
+                className="py-4 **:[[role=slider]]:h-6 **:[[role=slider]]:w-3 **:[[role=slider]]:rounded-none **:[[role=slider]]:bg-primary **:[[role=slider]]:border-none"
               />
             </div>
           </div>

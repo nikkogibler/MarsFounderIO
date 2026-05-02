@@ -26,7 +26,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const isActive = (path: string) => location === path;
 
   return (
-    <div className="min-h-[100dvh] flex flex-col font-sans bg-background text-foreground overflow-x-hidden selection:bg-primary selection:text-primary-foreground">
+    <div className="min-h-dvh flex flex-col font-sans bg-background text-foreground overflow-x-hidden selection:bg-primary selection:text-primary-foreground">
       {dustStorm?.active && (
         <div className="bg-destructive text-destructive-foreground px-4 py-1 text-xs font-mono font-bold tracking-widest text-center border-b border-destructive-foreground/20 uppercase flex justify-between items-center z-50 relative">
           <span>HAZARD DETECTED</span>
@@ -67,7 +67,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
         
         {/* Scan line effect */}
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50 relative overflow-hidden">
+        <div className="h-px w-full bg-linear-to-r from-transparent via-primary/50 to-transparent opacity-50 relative overflow-hidden">
           <div className="absolute inset-0 w-1/4 h-full bg-primary/80 blur-[2px] animate-[scan_4s_ease-in-out_infinite]" />
         </div>
       </header>

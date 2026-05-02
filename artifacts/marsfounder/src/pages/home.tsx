@@ -97,7 +97,7 @@ export default function Home() {
           {webglOk ? (
             <CanvasErrorBoundary
               fallback={
-                <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,_rgba(204,68,34,0.35),_transparent_60%)]" />
+                <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(204,68,34,0.35),transparent_60%)]" />
               }
             >
               <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
@@ -108,7 +108,7 @@ export default function Home() {
               </Canvas>
             </CanvasErrorBoundary>
           ) : (
-            <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,_rgba(204,68,34,0.35),_transparent_60%)]" />
+            <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(204,68,34,0.35),transparent_60%)]" />
           )}
         </div>
         
@@ -135,7 +135,7 @@ export default function Home() {
         </div>
         
         {/* Decorative elements */}
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-primary to-transparent" />
         <div className="absolute bottom-8 left-8 font-mono text-xs text-muted-foreground/50 tracking-widest hidden md:block">
           LAT 4.5895° N<br/>LON 137.4417° E
         </div>
@@ -146,17 +146,17 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="reveal-item flex flex-col gap-4 border-l border-primary/30 pl-6 relative">
-              <div className="absolute -left-[5px] top-0 w-2 h-2 bg-primary" />
+              <div className="absolute -left-1.25 top-0 w-2 h-2 bg-primary" />
               <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Surface-Ready Assets</h3>
               <p className="font-mono text-sm text-muted-foreground">Fleet capacity is modeled as pre-positioned hardware, reducing mission planning from launch logistics to tasking and verification.</p>
             </div>
             <div className="reveal-item flex flex-col gap-4 border-l border-primary/30 pl-6 relative">
-              <div className="absolute -left-[5px] top-0 w-2 h-2 bg-primary" />
+              <div className="absolute -left-1.25 top-0 w-2 h-2 bg-primary" />
               <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Usage-Based Operations</h3>
               <p className="font-mono text-sm text-muted-foreground">Configure a mission, assign a chassis, and track utilization by hourly credit burn, power budget, and mission duration.</p>
             </div>
             <div className="reveal-item flex flex-col gap-4 border-l border-primary/30 pl-6 relative">
-              <div className="absolute -left-[5px] top-0 w-2 h-2 bg-primary" />
+              <div className="absolute -left-1.25 top-0 w-2 h-2 bg-primary" />
               <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Modular Loadouts</h3>
               <p className="font-mono text-sm text-muted-foreground">Match chassis, tools, and add-ons to mission requirements before committing an asset to the surface plan.</p>
             </div>
@@ -186,7 +186,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {bots?.slice(0, 3).map((bot, i) => (
                 <Link key={bot.id} href={`/bots/${bot.id}`} className="reveal-item group block bg-card border border-border hover:border-primary transition-colors duration-300 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-linear-to-b from-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="p-6 flex flex-col h-full relative z-10">
                     <div className="flex justify-between items-start mb-12">
                       <span className="font-mono text-xs text-primary bg-primary/10 px-2 py-1">{bot.role}</span>
