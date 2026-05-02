@@ -1,4 +1,5 @@
 import { Link, useLocation } from "wouter";
+import { PoweredByBanner } from "@/components/PoweredByBanner";
 import { 
   useGetMarsTime, 
   useGetLightDelay, 
@@ -102,8 +103,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
         
-        <div className="max-w-7xl mx-auto mt-12 pt-4 border-t border-border/50 flex justify-between items-center text-[10px] font-mono text-muted-foreground/50">
+        <div className="max-w-7xl mx-auto mt-12 pt-4 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono text-muted-foreground/50">
           <span>© 2026 MARSFOUNDER INC.</span>
+          <PoweredByBanner />
           <span>NOT AFFILIATED WITH NASA OR SPACEX.</span>
         </div>
       </footer>

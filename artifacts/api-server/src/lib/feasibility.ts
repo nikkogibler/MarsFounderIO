@@ -63,7 +63,7 @@ Build: ${build?.name ?? "unknown"}
 Generate the feasibility report. Strict JSON only.`;
 
   const response = await openrouter.chat.completions.create({
-    model: "deepseek/deepseek-v4-flash",
+    model: "x-ai/grok-4.3",
     max_tokens: 1500,
     messages: [
       { role: "system", content: SYSTEM_PROMPT },

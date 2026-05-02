@@ -31,7 +31,7 @@ Voice rules (apply to ALL bots, then layer your personal flavor on top):
 Now stay in character.`;
 
   const response = await openrouter.chat.completions.create({
-    model: "deepseek/deepseek-v4-flash",
+    model: "x-ai/grok-4.3",
     max_tokens: 400,
     messages: [
       { role: "system", content: system },
