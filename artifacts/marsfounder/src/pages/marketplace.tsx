@@ -26,7 +26,7 @@ export default function Marketplace() {
         <div>
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Skill Marketplace</h1>
           <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest">
-            Over-the-air behavioral upgrades for your fleet.
+            Validated autonomy packages for deployed robotic assets.
           </p>
         </div>
         
@@ -40,7 +40,7 @@ export default function Marketplace() {
             <DialogHeader>
               <DialogTitle className="font-sans font-black uppercase text-2xl tracking-tight text-foreground">PARTNER PROGRAM</DialogTitle>
               <DialogDescription className="font-mono text-sm text-muted-foreground">
-                The marketplace API is currently in closed alpha. Join the waitlist as a Partner to get early access to the SDK.
+                The marketplace API is currently in closed alpha. Join as a partner to request SDK access.
               </DialogDescription>
             </DialogHeader>
             <div className="mt-6 flex justify-end">

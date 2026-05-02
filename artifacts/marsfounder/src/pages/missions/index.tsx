@@ -12,7 +12,7 @@ export default function MissionsList() {
         <div>
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Mission Log</h1>
           <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest">
-            Active and historical operations telemetry.
+            Active and historical surface operations.
           </p>
         </div>
         <Link href="/missions/new" className="inline-block bg-primary hover:bg-accent text-primary-foreground px-6 py-3 font-bold font-mono uppercase tracking-widest transition-colors border border-primary hover:border-accent">
@@ -29,9 +29,9 @@ export default function MissionsList() {
       ) : missions?.length === 0 ? (
         <div className="border border-border p-16 text-center font-mono text-muted-foreground bg-card/30">
           <p className="mb-4 text-primary text-xl">NO MISSIONS DETECTED.</p>
-          <p className="text-sm max-w-md mx-auto">Either you're cautious or you're broke. Configure a build and deploy some hardware.</p>
+          <p className="text-sm max-w-md mx-auto">Create a saved build before launching a surface mission.</p>
           <Link href="/missions/new" className="inline-block mt-8 border border-border px-6 py-2 hover:bg-primary/10 hover:text-primary transition-colors">
-            INITIATE DEPLOYMENT
+            CREATE MISSION
           </Link>
         </div>
       ) : (
@@ -50,7 +50,12 @@ export default function MissionsList() {
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 p-6 items-center">
                 <div className="col-span-1 md:col-span-3">
                   <h3 className="font-sans font-black uppercase text-lg group-hover:text-primary transition-colors truncate">{mission.name}</h3>
-                  <div className="font-mono text-[10px] text-muted-foreground">FOUNDER: {mission.founderHandle}</div>
+                  <div className="font-mono text-[10px] text-muted-foreground">OPERATOR: {mission.founderHandle}</div>
+                  {mission.missionBrief && (
+                    <div className="font-mono text-[10px] text-muted-foreground/80 mt-2 line-clamp-2">
+                      {mission.missionBrief}
+                    </div>
+                  )}
                 </div>
                 
                 <div className="col-span-1 md:col-span-2 flex items-center">

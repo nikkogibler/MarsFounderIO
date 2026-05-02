@@ -613,6 +613,9 @@ components:
         objective:
           type: string
           enum: [MINE, BUILD, SURVEY, REPAIR, RELAY, RESCUE]
+        missionBrief:
+          type: ["string", "null"]
+          description: Operator-authored mission directive or descriptive prompt
         targetMaterial:
           type: ["string", "null"]
         durationSols:
@@ -659,6 +662,9 @@ components:
         objective:
           type: string
           enum: [MINE, BUILD, SURVEY, REPAIR, RELAY, RESCUE]
+        missionBrief:
+          type: ["string", "null"]
+          description: Operator-authored mission directive or descriptive prompt
         targetMaterial:
           type: ["string", "null"]
         durationSols:

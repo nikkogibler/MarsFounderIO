@@ -17,7 +17,7 @@ export const MARKETPLACE_SKILLS = [
     name: "Vein Finder (Hematite/Olivine)",
     author: "@regolith_jpg",
     description:
-      "Spectrometer post-processor. Tells you if you're drilling rust or actual ore. Mostly rust. It's Mars.",
+      "Spectrometer post-processor for hematite, olivine, and high-priority extraction indicators.",
     compatibleRoles: ["MINER", "SURVEYOR"],
     downloadCount: 1903,
     rating: 4.4,
@@ -43,7 +43,7 @@ export const MARKETPLACE_SKILLS = [
     name: "Mesh Relay Handshake",
     author: "@uplink_betty",
     description:
-      "Three-bot mesh networking. If one bot loses comms, the other two route around it. Or roast it.",
+      "Three-asset mesh networking protocol with alternate routing during link degradation.",
     compatibleRoles: ["RELAY", "SURVEYOR"],
     downloadCount: 762,
     rating: 4.2,
@@ -82,7 +82,7 @@ export const MARKETPLACE_SKILLS = [
     name: "Pre-Dawn Thermal Blanket",
     author: "@coldsnap",
     description:
-      "Burns 2% extra power overnight to keep electronics above survival threshold. Don't let your bot freeze.",
+      "Uses controlled overnight power draw to keep electronics above survival threshold.",
     compatibleRoles: ["CONSTRUCTOR", "MINER", "MEDIC"],
     downloadCount: 5519,
     rating: 4.8,
@@ -95,7 +95,7 @@ export const MARKETPLACE_SKILLS = [
     name: "Jolt Impact Profile",
     author: "@hammertime",
     description:
-      "Custom impact-driver torque ramp for cold-soaked Martian rock. Stop snapping bits.",
+      "Impact-driver torque profile for cold-soaked rock and reduced bit failure.",
     compatibleRoles: ["CONSTRUCTOR", "MINER"],
     downloadCount: 1342,
     rating: 4.3,

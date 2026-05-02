@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import { marsfounderMockApiPlugin } from "./src/dev/mock-api";
 
 const rawPort = process.env.PORT;
 
@@ -29,6 +30,7 @@ if (!basePath) {
 export default defineConfig({
   base: basePath,
   plugins: [
+    ...(process.env.MOCK_API === "1" ? [marsfounderMockApiPlugin()] : []),
     react(),
     tailwindcss(),
     runtimeErrorOverlay(),
@@ -65,6 +67,12 @@ export default defineConfig({
     allowedHosts: true,
     fs: {
       strict: true,
+    },
+    proxy: {
+      "/api": {
+        target: process.env.VITE_API_URL ?? "http://localhost:3000",
+        changeOrigin: true,
+      },
     },
   },
   preview: {

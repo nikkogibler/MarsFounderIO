@@ -98,7 +98,7 @@ export default function Configure() {
     if (stats.power < 0) {
       toast({
         title: "POWER DEFICIT DETECTED",
-        description: "Cannot save build. Power draw exceeds output.",
+        description: "Build cannot be saved because configured power draw exceeds available output.",
         variant: "destructive",
       });
       return;
@@ -116,14 +116,14 @@ export default function Configure() {
       onSuccess: () => {
         toast({
           title: "BUILD SAVED",
-          description: "Configuration stored in telemetry.",
+          description: "Configuration saved for mission planning.",
         });
         setBuildName("");
         refetchBuilds();
       },
       onError: (err) => {
         toast({
-          title: "TRANSMISSION FAILED",
+          title: "SAVE FAILED",
           description: (err as any)?.data?.error || (err as Error)?.message || "Could not save build.",
           variant: "destructive",
         });
@@ -145,7 +145,7 @@ export default function Configure() {
       <div className="mb-12 border-b border-border pb-6">
         <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Build Configurator</h1>
         <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest">
-          Assemble hardware loadout. Monitor telemetry.
+          Assemble a mission-ready chassis configuration and validate operating limits.
         </p>
       </div>
 
@@ -154,7 +154,7 @@ export default function Configure() {
         {/* Left Rail: Saved Builds */}
         <div className="col-span-1 border border-border bg-card/30 flex flex-col h-[calc(100vh-250px)] sticky top-24">
           <div className="p-4 border-b border-border bg-background/50">
-            <h3 className="font-sans font-black uppercase tracking-tight">SAVED CONFIGS</h3>
+            <h3 className="font-sans font-black uppercase tracking-tight">SAVED BUILDS</h3>
           </div>
           <ScrollArea className="flex-1">
             {loadingBuilds ? (
@@ -163,7 +163,7 @@ export default function Configure() {
               </div>
             ) : builds?.length === 0 ? (
               <div className="p-8 text-center font-mono text-xs text-muted-foreground">
-                NO SAVED BUILDS IN TELEMETRY
+                NO SAVED BUILDS AVAILABLE
               </div>
             ) : (
               <div className="flex flex-col">
@@ -294,7 +294,7 @@ export default function Configure() {
         {/* Right Rail: HUD & Save */}
         <div className="col-span-1 border border-border bg-background flex flex-col h-[calc(100vh-250px)] sticky top-24 shadow-[0_0_30px_rgba(204,68,34,0.1)]">
           <div className="p-4 border-b border-border bg-primary text-primary-foreground">
-            <h3 className="font-sans font-black uppercase tracking-tight">LIVE TELEMETRY</h3>
+              <h3 className="font-sans font-black uppercase tracking-tight">BUILD SUMMARY</h3>
           </div>
           
           <div className="p-6 flex flex-col gap-6 flex-1">
@@ -310,7 +310,7 @@ export default function Configure() {
               </span>
               {stats.power < 0 && (
                 <span className="font-mono text-[10px] text-destructive bg-destructive/10 px-2 py-1 border border-destructive/30 mt-2">
-                  WARNING: POWER DEFICIT. CANNOT DEPLOY.
+                  WARNING: POWER DEFICIT. REVISE LOADOUT.
                 </span>
               )}
             </div>
@@ -334,7 +334,7 @@ export default function Configure() {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-mono text-[10px] text-muted-foreground">FOUNDER HANDLE</label>
+                <label className="font-mono text-[10px] text-muted-foreground">OPERATOR HANDLE</label>
                 <Input 
                   value={founderHandle} 
                   onChange={e => setFounderHandle(e.target.value)} 
@@ -348,7 +348,7 @@ export default function Configure() {
                 disabled={stats.power < 0 || !buildName || !founderHandle || createBuild.isPending}
                 className="w-full rounded-none font-bold font-mono uppercase tracking-widest mt-4 bg-primary text-primary-foreground hover:bg-accent border border-primary hover:border-accent disabled:opacity-50 disabled:bg-card disabled:text-muted-foreground disabled:border-border"
               >
-                {createBuild.isPending ? 'TRANSMITTING...' : 'SAVE BUILD'}
+                {createBuild.isPending ? 'SAVING...' : 'SAVE BUILD'}
               </Button>
             </form>
           </div>

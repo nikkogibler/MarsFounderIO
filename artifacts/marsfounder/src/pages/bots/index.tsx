@@ -10,7 +10,7 @@ export default function BotsList() {
       <div className="mb-12 border-b border-border pb-6">
         <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Fleet Roster</h1>
         <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest">
-          Hardware deployed on the Martian surface. Ready for tasking.
+          Robotic asset classes available for surface mission planning.
         </p>
       </div>
 
@@ -32,7 +32,7 @@ export default function BotsList() {
       ) : bots?.length === 0 ? (
         <div className="border border-border p-12 text-center font-mono text-muted-foreground bg-card/30">
           <p className="mb-4 text-primary">NO ASSETS DETECTED IN SECTOR.</p>
-          <p className="text-xs">Either our telemetry is down or someone bought the entire fleet. Check back later.</p>
+          <p className="text-xs">Fleet catalog data is currently unavailable. Check the API connection and retry.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -51,7 +51,7 @@ export default function BotsList() {
                 
                 <div className="mt-auto mb-6">
                   <h2 className="text-3xl font-black uppercase tracking-tight text-foreground group-hover:text-primary transition-colors">{bot.codename}</h2>
-                  <p className="font-mono text-sm text-muted-foreground mt-2 min-h-[40px]">{bot.tagline}</p>
+                  <p className="font-mono text-sm text-muted-foreground mt-2 min-h-[72px] leading-relaxed">{bot.description}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 pt-6 border-t border-border/50 mt-auto font-mono text-xs">
@@ -75,7 +75,7 @@ export default function BotsList() {
               </div>
               
               <div className="bg-secondary/50 px-6 py-3 font-mono text-xs tracking-widest text-right border-t border-border group-hover:bg-primary/10 group-hover:text-primary transition-colors flex justify-between items-center">
-                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-primary">ACCESS TERMINAL</span>
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-primary">VIEW ASSET PROFILE</span>
                 <span>[{bot.id.substring(0, 8)}]</span>
               </div>
             </Link>

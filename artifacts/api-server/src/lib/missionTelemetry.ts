@@ -6,12 +6,12 @@ const SECS_PER_SOL = 88775.244;
 const BOT_LINES: string[] = [
   "Wheels turning. Surface is stable.",
   "Sample bay loaded. Filter 80%.",
-  "Encountered a rock the size of a Brooklyn fridge. Going around.",
+  "Obstacle detected. Route adjustment in progress.",
   "Solar panels at 73%. Dusty.",
   "Drilling. Substrate harder than expected.",
-  "Audio sensor caught the wind again. Lonely up here.",
+  "Wind noise elevated. Sensors remain within tolerance.",
   "Battery temp climbing. Throttling motors.",
-  "Achievement unlocked: didn't fall in a crater today.",
+  "Crater edge detected. Maintaining safe clearance.",
   "Comms stable. Δ-V budget on plan.",
   "Spectrometer locked target. Reading.",
   "Gripper torque nominal. Picking up the next sample.",
@@ -111,7 +111,7 @@ export function computeMissionState(
       message = MC_LINES[Math.floor(pseudoRandom(seed + i + 7) * MC_LINES.length)] ?? MC_LINES[0]!;
     } else {
       from = "FOUNDER";
-      message = `[${mission.founderHandle}] keep going. don't break my robot.`;
+      message = `[${mission.founderHandle}] Continue current mission profile.`;
     }
     telemetry.push({
       timestamp: ts,
@@ -136,7 +136,7 @@ export function computeMissionState(
       timestamp: now.toISOString(),
       sol: currentSol,
       from: "MISSION_CONTROL",
-      message: "MISSION CONTROL: Mission complete. Bot returning to base. Pay your invoice.",
+      message: "MISSION CONTROL: Mission complete. Asset returning to base.",
       signalDelaySeconds: lightDelay.seconds,
     });
   }

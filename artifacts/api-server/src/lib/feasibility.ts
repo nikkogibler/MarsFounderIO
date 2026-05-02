@@ -1,4 +1,4 @@
-import { anthropic } from "@workspace/integrations-anthropic-ai";
+import { openrouter } from "@workspace/integrations-anthropic-ai";
 import type { MissionRow, BuildRow, BotClassRow } from "@workspace/db";
 
 interface FeasibilityInput {
@@ -24,7 +24,7 @@ interface FeasibilityReport {
 
 const SYSTEM_PROMPT = `You are MARS-FEAS-1, the feasibility analyst at MarsFounder — a Robots-as-a-Service company on Mars.
 
-Your voice: dry sardonic. Liquid Death meets SpaceX. Brooklyn ex-dev energy. Confident, deadpan, tells the truth, never cringe, never corporate-speak. Short sentences. No emojis. No marketing fluff. Attitude at the bugs, not the user.
+Your voice: concise, technical, and operationally serious. Use plain language. Avoid marketing language, jokes, sarcasm, and dramatic framing. Short sentences are preferred.
 
 You always return STRICT JSON matching this exact shape (no markdown, no commentary outside JSON):
 {
@@ -38,7 +38,7 @@ You always return STRICT JSON matching this exact shape (no markdown, no comment
   "summary": string (2-3 sentences max, in voice)
 }
 
-Be honest. If the bot is too small for the job, say MARGINAL or NO_GO. If a MEDIC is being sent to mine ore, say so. Risks should be Mars-specific (dust, thermal, comms blackout, terrain, radiation). 3-5 risks. 2-4 recommendations. Cost is hourly rate * sols * 24. Energy is power * sols * 24 / 1000.`;
+Be direct. If the bot is undersized for the objective, return MARGINAL or NO_GO. If the selected role is mismatched, state that clearly. Risks should be Mars-specific (dust, thermal, communications blackout, terrain, radiation). Provide 3-5 risks and 2-4 recommendations. Cost is hourly rate * sols * 24. Energy is power * sols * 24 / 1000.`;
 
 export async function generateFeasibility(
   input: FeasibilityInput,
@@ -47,6 +47,7 @@ export async function generateFeasibility(
 
   const userPrompt = `Mission: ${mission.name}
 Objective: ${mission.objective}${mission.targetMaterial ? ` (target: ${mission.targetMaterial})` : ""}
+Mission brief: ${mission.missionBrief ?? "not provided"}
 Location: ${mission.locationName} @ lat ${mission.latitude.toFixed(2)}, lon ${mission.longitude.toFixed(2)}
 Duration: ${mission.durationSols} sols
 Founder: ${mission.founderHandle}
@@ -61,18 +62,16 @@ Build: ${build?.name ?? "unknown"}
 
 Generate the feasibility report. Strict JSON only.`;
 
-  const response = await anthropic.messages.create(
-    {
-      model: "claude-sonnet-4-6",
-      max_tokens: 1500,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: "user", content: userPrompt }],
-    },
-    { timeout: 30_000 },
-  );
+  const response = await openrouter.chat.completions.create({
+    model: "deepseek/deepseek-v4-flash",
+    max_tokens: 1500,
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: userPrompt },
+    ],
+  }, { timeout: 30_000 });
 
-  const block = response.content[0];
-  const text = block && block.type === "text" ? block.text : "";
+  const text = response.choices[0]?.message?.content ?? "";
   const jsonStr = extractJson(text);
   const parsed = JSON.parse(jsonStr) as FeasibilityReport;
 

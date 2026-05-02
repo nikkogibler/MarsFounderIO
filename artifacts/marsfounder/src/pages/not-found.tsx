@@ -11,17 +11,16 @@ export default function NotFound() {
           Off-Nominal.
         </h1>
         <h2 className="text-2xl font-mono text-muted-foreground uppercase tracking-widest mb-12">
-          Sector Uncharted. No telemetry found at these coordinates.
+          No route or telemetry endpoint found for this request.
         </h2>
       </div>
       
       <div className="flex flex-col gap-4 font-mono text-sm max-w-lg mb-12 border-l-2 border-primary pl-6 text-left">
         <p className="text-foreground">
-          You've navigated beyond the mapped operational boundary. 
+          The requested page is outside the current application map.
         </p>
         <p className="text-muted-foreground">
-          If you deployed a bot here, it's likely buried under regolith by now. 
-          Return to base before life support systems flag this session.
+          Return to mission control or use the primary navigation to continue.
         </p>
       </div>
 

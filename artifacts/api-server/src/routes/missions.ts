@@ -64,6 +64,7 @@ router.post("/missions", async (req, res): Promise<void> => {
     ["locationName", data.locationName, 80],
     ["founderHandle", data.founderHandle, 40],
     ["targetMaterial", data.targetMaterial, 60],
+    ["missionBrief", data.missionBrief, 2200],
   ];
   for (const [field, value, max] of lengthChecks) {
     if (value && value.length > max) {
@@ -97,6 +98,7 @@ router.post("/missions", async (req, res): Promise<void> => {
       name: data.name,
       buildId: data.buildId,
       objective: data.objective,
+      missionBrief: data.missionBrief?.trim() || null,
       targetMaterial: data.targetMaterial ?? null,
       durationSols: data.durationSols,
       locationName: data.locationName,
@@ -146,7 +148,7 @@ router.get("/missions/recent", async (_req, res): Promise<void> => {
         missionId: m.id,
         missionName: m.name,
         founderHandle: m.founderHandle,
-        event: `${m.name} hit ${computed.progressPercent}% — still alive.`,
+        event: `${m.name} reached ${computed.progressPercent}% completion.`,
         timestamp: new Date(now.getTime() - 60000).toISOString(),
         eventType: "MILESTONE",
       });
@@ -156,7 +158,7 @@ router.get("/missions/recent", async (_req, res): Promise<void> => {
         missionId: m.id,
         missionName: m.name,
         founderHandle: m.founderHandle,
-        event: `${m.name} paused — dust storm in zone.`,
+        event: `${m.name} paused due to dust storm activity.`,
         timestamp: now.toISOString(),
         eventType: "DUST_STORM_PAUSE",
       });
@@ -166,7 +168,7 @@ router.get("/missions/recent", async (_req, res): Promise<void> => {
         missionId: m.id,
         missionName: m.name,
         founderHandle: m.founderHandle,
-        event: `${m.name} complete. Invoice on the way.`,
+        event: `${m.name} completed. Asset returning to base.`,
         timestamp: now.toISOString(),
         eventType: "COMPLETED",
       });

@@ -1,4 +1,4 @@
-import { anthropic } from "@workspace/integrations-anthropic-ai";
+import { openrouter } from "@workspace/integrations-anthropic-ai";
 import type { BotClassRow } from "@workspace/db";
 
 interface PersonaReplyResult {
@@ -30,17 +30,15 @@ Voice rules (apply to ALL bots, then layer your personal flavor on top):
 
 Now stay in character.`;
 
-  const response = await anthropic.messages.create(
-    {
-      model: "claude-sonnet-4-6",
-      max_tokens: 400,
-      system,
-      messages: [{ role: "user", content: userMessage }],
-    },
-    { timeout: 20_000 },
-  );
-  const block = response.content[0];
-  const text = (block && block.type === "text" ? block.text : "").trim();
+  const response = await openrouter.chat.completions.create({
+    model: "deepseek/deepseek-v4-flash",
+    max_tokens: 400,
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: userMessage },
+    ],
+  }, { timeout: 20_000 });
+  const text = (response.choices[0]?.message?.content ?? "").trim();
   return {
     text: text || "Comms degraded. Try again.",
     audioUrl: null,

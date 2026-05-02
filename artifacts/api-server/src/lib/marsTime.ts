@@ -88,7 +88,7 @@ export function getDustStorm(now: Date = new Date()): {
       opacityTau: 0.4,
       startedAt: null,
       message:
-        "Skies are clear-ish. Visibility nominal. Don't get comfortable.",
+        "Visibility nominal. No active dust event detected.",
     };
   }
   const intensity = (t - 0.55) / 0.45;
@@ -114,7 +114,7 @@ export function getDustStorm(now: Date = new Date()): {
   const affectedRegions = STORM_REGIONS.slice(0, count);
   const message =
     severity === "GLOBAL"
-      ? "Planet-wide dust event. Solar generation tanked. All exposed missions auto-paused."
+      ? "Planet-wide dust event. Solar generation degraded. Exposed missions auto-paused."
       : severity === "REGIONAL"
         ? `Regional dust event across ${affectedRegions.length} sectors. Power generation degraded.`
         : `Localized dust kicking up in ${affectedRegions[0]}. Bots in zone may throttle.`;

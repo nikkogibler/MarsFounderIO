@@ -119,10 +119,10 @@ export default function Home() {
             SYSTEM INITIALIZED • CONNECTION ESTABLISHED
           </div>
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
-            Earth Labor<br/>Is Obsolete
+            Robotic Labor<br/>For Mars
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground font-mono max-w-3xl mb-12">
-            The AWS of Mars labor. Rent industrial bots already deployed on the surface. Execute missions. Pay in credits. No launch required.
+            MarsFounder operates surface-ready robotic assets for construction, survey, extraction, repair, and communications missions.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link href="/bots" className="bg-primary hover:bg-accent hover:text-primary-foreground text-primary-foreground px-8 py-4 font-bold font-mono uppercase tracking-widest transition-all duration-300 border border-primary hover:border-accent shadow-[0_0_20px_rgba(204,68,34,0.3)]">
@@ -147,18 +147,18 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="reveal-item flex flex-col gap-4 border-l border-primary/30 pl-6 relative">
               <div className="absolute -left-[5px] top-0 w-2 h-2 bg-primary" />
-              <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Zero Launch Wait</h3>
-              <p className="font-mono text-sm text-muted-foreground">Our hardware is already on the dirt. Skip the 9-month transit. Start operations in 9 minutes.</p>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Surface-Ready Assets</h3>
+              <p className="font-mono text-sm text-muted-foreground">Fleet capacity is modeled as pre-positioned hardware, reducing mission planning from launch logistics to tasking and verification.</p>
             </div>
             <div className="reveal-item flex flex-col gap-4 border-l border-primary/30 pl-6 relative">
               <div className="absolute -left-[5px] top-0 w-2 h-2 bg-primary" />
-              <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Usage Based</h3>
-              <p className="font-mono text-sm text-muted-foreground">You don't own the bot. You own the results. Pay hourly in MarsFounder credits. We handle maintenance.</p>
+              <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Usage-Based Operations</h3>
+              <p className="font-mono text-sm text-muted-foreground">Configure a mission, assign a chassis, and track utilization by hourly credit burn, power budget, and mission duration.</p>
             </div>
             <div className="reveal-item flex flex-col gap-4 border-l border-primary/30 pl-6 relative">
               <div className="absolute -left-[5px] top-0 w-2 h-2 bg-primary" />
               <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Modular Loadouts</h3>
-              <p className="font-mono text-sm text-muted-foreground">Configure chassis with specialized tools and addons. Swap drills for welders based on mission parameters.</p>
+              <p className="font-mono text-sm text-muted-foreground">Match chassis, tools, and add-ons to mission requirements before committing an asset to the surface plan.</p>
             </div>
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 reveal-item">
             <div>
               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Available Chassis</h2>
-              <p className="font-mono text-muted-foreground">5 CLASSES. ENDLESS CONFIGURATIONS.</p>
+              <p className="font-mono text-muted-foreground">5 ASSET CLASSES. CONFIGURABLE MISSION LOADOUTS.</p>
             </div>
             <Link href="/configure" className="text-primary font-mono text-sm hover:text-accent tracking-widest mt-4 md:mt-0 flex items-center gap-2">
               OPEN CONFIGURATOR <span className="text-xl">→</span>
@@ -194,7 +194,7 @@ export default function Home() {
                     </div>
                     <div className="mt-auto">
                       <h3 className="text-3xl font-black uppercase tracking-tight text-foreground group-hover:text-primary transition-colors">{bot.codename}</h3>
-                      <p className="font-mono text-sm text-muted-foreground mt-2">{bot.tagline}</p>
+                      <p className="font-mono text-sm text-muted-foreground mt-2 leading-relaxed">{bot.description}</p>
                     </div>
                   </div>
                 </Link>
@@ -208,9 +208,9 @@ export default function Home() {
       <section className="py-32 reveal-section bg-primary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20" />
         <div className="container mx-auto px-6 relative z-10 text-center">
-          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 reveal-item">Ready to break dirt?</h2>
+          <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 reveal-item">Plan the next surface operation</h2>
           <p className="font-mono text-xl max-w-2xl mx-auto mb-12 opacity-80 reveal-item">
-            Launch windows don't apply when the hardware is already there. Secure your credits and deploy today.
+            Request access to evaluate robotic capacity, mission feasibility, and surface operations planning.
           </p>
           <div className="reveal-item">
             <Link href="/waitlist" className="inline-block bg-background hover:bg-foreground text-foreground hover:text-background px-12 py-5 font-bold font-mono uppercase tracking-widest transition-colors duration-300 border border-transparent shadow-2xl">

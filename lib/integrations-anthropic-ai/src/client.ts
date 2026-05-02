@@ -1,18 +1,16 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
-if (!process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL) {
+if (!process.env.OPENROUTER_API_KEY) {
   throw new Error(
-    "AI_INTEGRATIONS_ANTHROPIC_BASE_URL must be set. Did you forget to provision the Anthropic AI integration?",
+    "OPENROUTER_API_KEY must be set. Add it to your .env file.",
   );
 }
 
-if (!process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY) {
-  throw new Error(
-    "AI_INTEGRATIONS_ANTHROPIC_API_KEY must be set. Did you forget to provision the Anthropic AI integration?",
-  );
-}
-
-export const anthropic = new Anthropic({
-  apiKey: process.env.AI_INTEGRATIONS_ANTHROPIC_API_KEY,
-  baseURL: process.env.AI_INTEGRATIONS_ANTHROPIC_BASE_URL,
+export const openrouter = new OpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: "https://openrouter.ai/api/v1",
+  defaultHeaders: {
+    "HTTP-Referer": "https://marsfounder.io",
+    "X-Title": "MarsFounder",
+  },
 });

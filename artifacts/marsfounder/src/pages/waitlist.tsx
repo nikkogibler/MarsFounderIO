@@ -32,7 +32,7 @@ export default function Waitlist() {
       },
       onError: (err) => {
         toast({
-          title: "TRANSMISSION FAILED",
+          title: "REQUEST FAILED",
           description: (err as any)?.data?.error || (err as Error)?.message || "Could not add to waitlist.",
           variant: "destructive",
         });
@@ -47,11 +47,10 @@ export default function Waitlist() {
           TRANSMISSION RECEIVED
         </div>
         <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-6">
-          You're on the manifest.
+          Access request received.
         </h1>
         <p className="font-mono text-muted-foreground mb-12">
-          We'll ping your terminal when hardware becomes available in your sector. 
-          Until then, keep digging.
+          We will contact you when evaluation access is available for your organization.
         </p>
         <Button onClick={() => setSubmitted(false)} variant="outline" className="rounded-none border-border bg-transparent text-foreground hover:border-primary hover:text-primary font-mono uppercase tracking-widest">
           SUBMIT ANOTHER
@@ -65,13 +64,13 @@ export default function Waitlist() {
       <div className="mb-12 border-b border-border pb-6">
         <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Waitlist</h1>
         <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest">
-          Hardware is limited. Secure your spot in the next launch window.
+          Request evaluation access for MarsFounder surface operations.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-8 bg-card/30 border border-border p-8">
         <div className="flex flex-col gap-2">
-          <label className="font-mono text-[10px] text-muted-foreground tracking-widest">COMMS UPLINK (EMAIL)</label>
+          <label className="font-mono text-[10px] text-muted-foreground tracking-widest">WORK EMAIL</label>
           <Input 
             type="email"
             value={email} 
@@ -103,7 +102,7 @@ export default function Waitlist() {
           <Input 
             value={company} 
             onChange={e => setCompany(e.target.value)} 
-            placeholder="e.g. Weyland-Yutani"
+            placeholder="e.g. Ares Infrastructure"
             className="font-mono rounded-none border-border bg-card uppercase"
           />
         </div>
@@ -113,7 +112,7 @@ export default function Waitlist() {
           <Textarea 
             value={notes} 
             onChange={e => setNotes(e.target.value)} 
-            placeholder="What are you trying to dig out of the dirt?"
+            placeholder="Briefly describe your intended mission profile."
             className="font-mono rounded-none border-border bg-card min-h-[100px] resize-none"
           />
         </div>
@@ -123,7 +122,7 @@ export default function Waitlist() {
           disabled={!email || joinWaitlist.isPending}
           className="rounded-none font-bold font-mono uppercase tracking-widest bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground border border-primary mt-4 py-6"
         >
-          {joinWaitlist.isPending ? 'TRANSMITTING...' : 'REQUEST ACCESS'}
+          {joinWaitlist.isPending ? 'SUBMITTING...' : 'REQUEST ACCESS'}
         </Button>
       </form>
     </div>

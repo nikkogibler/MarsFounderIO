@@ -10,9 +10,9 @@ const BOTS = [
     id: "bot-constructor-01",
     codename: "CONSTRUCTOR-01",
     name: "Foreman",
-    tagline: "Builds the habitat. Doesn't ask twice.",
+    tagline: "Heavy construction platform for habitat and utility work.",
     description:
-      "Heavy-frame construction unit. Pours regolith concrete, welds, lifts. The bot you call when something needs to actually exist on Mars.",
+      "High-mass construction unit for regolith concrete placement, structural welding, lifting, and surface preparation.",
     role: "CONSTRUCTOR",
     hourlyCredits: 480,
     massKg: 920,
@@ -32,9 +32,9 @@ const BOTS = [
     id: "bot-surveyor-01",
     codename: "SURVEYOR-01",
     name: "Recon",
-    tagline: "Maps the unmapped. Quietly judges your route.",
+    tagline: "Long-range mapping and site characterization platform.",
     description:
-      "Long-range survey unit. LIDAR, multispectral, ground-penetrating radar. Walks farther than you'd expect a robot to walk.",
+      "Autonomous survey unit with LIDAR, multispectral imaging, and ground-penetrating radar for route planning and resource assessment.",
     role: "SURVEYOR",
     hourlyCredits: 320,
     massKg: 280,
@@ -54,9 +54,9 @@ const BOTS = [
     id: "bot-miner-01",
     codename: "MINER-01",
     name: "Drill",
-    tagline: "Pulls metal out of the cold. Doesn't tire.",
+    tagline: "Robotic extraction system for mineral and ice operations.",
     description:
-      "Extraction unit. Diamond-tipped percussive drill, electromagnetic separator, sample bay. Built for hours on the same square meter.",
+      "Extraction unit with percussive drilling, sample handling, and separation hardware for sustained resource collection.",
     role: "MINER",
     hourlyCredits: 540,
     massKg: 1140,
@@ -76,9 +76,9 @@ const BOTS = [
     id: "bot-medic-01",
     codename: "MEDIC-01",
     name: "Patch",
-    tagline: "Keeps the fleet alive. Carries the tools.",
+    tagline: "Field service and recovery unit for deployed assets.",
     description:
-      "Diagnostic and repair unit. Multimeter array, micro-welder, replacement parts cache. Dispatched when another bot stops checking in.",
+      "Maintenance platform with diagnostics, micro-welding, replacement parts, and recovery tooling for fleet uptime.",
     role: "MEDIC",
     hourlyCredits: 380,
     massKg: 410,
@@ -98,9 +98,9 @@ const BOTS = [
     id: "bot-relay-01",
     codename: "RELAY-01",
     name: "Echo",
-    tagline: "Holds the signal. Talks to the orbit.",
+    tagline: "Mobile communications relay for fleet operations.",
     description:
-      "Mobile comms relay. High-gain dish, mesh radio array, signal booster. Parks on high ground and keeps the fleet talking.",
+      "Communications platform with high-gain uplink, mesh routing, and signal stabilization for distributed surface assets.",
     role: "RELAY",
     hourlyCredits: 260,
     massKg: 180,
@@ -119,25 +119,25 @@ const BOTS = [
 ];
 
 const TOOLS = [
-  { id: "tool-drill-diamond", name: "Diamond-Tipped Drill", category: "DRILL", description: "Cuts cold basalt without complaining.", massKg: 28, powerDrawWatts: 850, creditsPerHour: 60, compatibleRoles: ["MINER", "CONSTRUCTOR"] },
-  { id: "tool-drill-percussive", name: "Percussive Drill Mk.II", category: "DRILL", description: "For when the rock is winning.", massKg: 34, powerDrawWatts: 1100, creditsPerHour: 70, compatibleRoles: ["MINER"] },
-  { id: "tool-hammer-impact", name: "Impact Hammer", category: "HAMMER", description: "Breaks loose what the drill couldn't.", massKg: 18, powerDrawWatts: 480, creditsPerHour: 32, compatibleRoles: ["CONSTRUCTOR", "MINER"] },
-  { id: "tool-driver-impact", name: "Impact Driver", category: "IMPACT_DRIVER", description: "Bolts. Lots of bolts.", massKg: 8, powerDrawWatts: 220, creditsPerHour: 18, compatibleRoles: ["CONSTRUCTOR", "MEDIC"] },
-  { id: "tool-spec-multi", name: "Multispectral Spectrometer", category: "SPECTROMETER", description: "Tells you what you're standing on. Usually rust.", massKg: 6, powerDrawWatts: 90, creditsPerHour: 24, compatibleRoles: ["SURVEYOR", "MINER"] },
-  { id: "tool-spec-laser", name: "Laser Induced Spectrometer", category: "SPECTROMETER", description: "Vaporizes a tiny dot. Reads the plume. Very tactical.", massKg: 9, powerDrawWatts: 160, creditsPerHour: 38, compatibleRoles: ["SURVEYOR"] },
-  { id: "tool-gripper-3finger", name: "3-Finger Manipulator", category: "GRIPPER", description: "Picks up samples without dropping them. Most days.", massKg: 12, powerDrawWatts: 140, creditsPerHour: 22, compatibleRoles: ["CONSTRUCTOR", "MINER", "MEDIC", "SURVEYOR"] },
+  { id: "tool-drill-diamond", name: "Diamond-Tipped Drill", category: "DRILL", description: "High-wear drilling head for basalt and compacted regolith.", massKg: 28, powerDrawWatts: 850, creditsPerHour: 60, compatibleRoles: ["MINER", "CONSTRUCTOR"] },
+  { id: "tool-drill-percussive", name: "Percussive Drill Mk.II", category: "DRILL", description: "Percussive drilling module for dense subsurface material.", massKg: 34, powerDrawWatts: 1100, creditsPerHour: 70, compatibleRoles: ["MINER"] },
+  { id: "tool-hammer-impact", name: "Impact Hammer", category: "HAMMER", description: "Impact tool for fracture, compaction, and surface preparation.", massKg: 18, powerDrawWatts: 480, creditsPerHour: 32, compatibleRoles: ["CONSTRUCTOR", "MINER"] },
+  { id: "tool-driver-impact", name: "Impact Driver", category: "IMPACT_DRIVER", description: "Fastening module for structural assembly and service work.", massKg: 8, powerDrawWatts: 220, creditsPerHour: 18, compatibleRoles: ["CONSTRUCTOR", "MEDIC"] },
+  { id: "tool-spec-multi", name: "Multispectral Spectrometer", category: "SPECTROMETER", description: "Material classification sensor for survey and extraction planning.", massKg: 6, powerDrawWatts: 90, creditsPerHour: 24, compatibleRoles: ["SURVEYOR", "MINER"] },
+  { id: "tool-spec-laser", name: "Laser Induced Spectrometer", category: "SPECTROMETER", description: "Laser spectroscopy module for rapid surface composition analysis.", massKg: 9, powerDrawWatts: 160, creditsPerHour: 38, compatibleRoles: ["SURVEYOR"] },
+  { id: "tool-gripper-3finger", name: "3-Finger Manipulator", category: "GRIPPER", description: "General-purpose manipulator for samples, tools, and service tasks.", massKg: 12, powerDrawWatts: 140, creditsPerHour: 22, compatibleRoles: ["CONSTRUCTOR", "MINER", "MEDIC", "SURVEYOR"] },
   { id: "tool-bag-sample", name: "Sample Bay (Sealed)", category: "SAMPLE_BAG", description: "Holds 14 kg of regolith without dust contamination.", massKg: 22, powerDrawWatts: 30, creditsPerHour: 16, compatibleRoles: ["MINER", "SURVEYOR", "MEDIC"] },
-  { id: "tool-welder-arc", name: "Arc Welder (Vacuum-Rated)", category: "WELDER", description: "Joins steel in 7 mbar. Don't stare at it.", massKg: 21, powerDrawWatts: 950, creditsPerHour: 48, compatibleRoles: ["CONSTRUCTOR", "MEDIC"] },
-  { id: "tool-cutter-plasma", name: "Plasma Cutter", category: "CUTTER", description: "Cuts what needs cutting.", massKg: 19, powerDrawWatts: 880, creditsPerHour: 44, compatibleRoles: ["CONSTRUCTOR", "MEDIC"] },
+  { id: "tool-welder-arc", name: "Arc Welder (Vacuum-Rated)", category: "WELDER", description: "Vacuum-rated welding module for structural repair and assembly.", massKg: 21, powerDrawWatts: 950, creditsPerHour: 48, compatibleRoles: ["CONSTRUCTOR", "MEDIC"] },
+  { id: "tool-cutter-plasma", name: "Plasma Cutter", category: "CUTTER", description: "Cutting module for metalwork, access, and repair operations.", massKg: 19, powerDrawWatts: 880, creditsPerHour: 44, compatibleRoles: ["CONSTRUCTOR", "MEDIC"] },
 ];
 
 const ADDONS = [
-  { id: "addon-heat-shield", name: "Reinforced Heat Shield", category: "HEAT_SHIELD", description: "Survives entry, descent, and the occasional dust devil.", massKg: 35, powerEffectWatts: 0, creditsPerHour: 12 },
-  { id: "addon-solar-extra", name: "Auxiliary Solar Array", category: "EXTRA_SOLAR", description: "+600 W in clear skies. 0 W when dust hits tau 3.", massKg: 14, powerEffectWatts: 600, creditsPerHour: 18 },
-  { id: "addon-comms-relay", name: "High-Gain Comms Relay", category: "COMMS_RELAY", description: "Direct uplink. Bypass the mesh.", massKg: 11, powerEffectWatts: -120, creditsPerHour: 22 },
-  { id: "addon-battery-pack", name: "Auxiliary Battery Pack", category: "BATTERY_PACK", description: "+8 kWh storage. Survives cold snaps.", massKg: 26, powerEffectWatts: 0, creditsPerHour: 14 },
-  { id: "addon-rad-shield", name: "Radiation Shielding Plate", category: "RADIATION_SHIELD", description: "Drops electronics fault rate by 60%.", massKg: 31, powerEffectWatts: 0, creditsPerHour: 16 },
-  { id: "addon-dust-filter", name: "Cyclonic Dust Filter", category: "DUST_FILTER", description: "Keeps fines out of the bearings. Worth every credit.", massKg: 7, powerEffectWatts: -30, creditsPerHour: 11 },
+  { id: "addon-heat-shield", name: "Reinforced Heat Shield", category: "HEAT_SHIELD", description: "Additional thermal protection for exposed operations.", massKg: 35, powerEffectWatts: 0, creditsPerHour: 12 },
+  { id: "addon-solar-extra", name: "Auxiliary Solar Array", category: "EXTRA_SOLAR", description: "Supplemental generation capacity in clear conditions.", massKg: 14, powerEffectWatts: 600, creditsPerHour: 18 },
+  { id: "addon-comms-relay", name: "High-Gain Comms Relay", category: "COMMS_RELAY", description: "Dedicated uplink for operations outside standard mesh coverage.", massKg: 11, powerEffectWatts: -120, creditsPerHour: 22 },
+  { id: "addon-battery-pack", name: "Auxiliary Battery Pack", category: "BATTERY_PACK", description: "Additional energy storage for long-duration tasking.", massKg: 26, powerEffectWatts: 0, creditsPerHour: 14 },
+  { id: "addon-rad-shield", name: "Radiation Shielding Plate", category: "RADIATION_SHIELD", description: "Extra shielding for electronics in high-exposure areas.", massKg: 31, powerEffectWatts: 0, creditsPerHour: 16 },
+  { id: "addon-dust-filter", name: "Cyclonic Dust Filter", category: "DUST_FILTER", description: "Bearing and intake protection for high-dust environments.", massKg: 7, powerEffectWatts: -30, creditsPerHour: 11 },
 ];
 
 export async function seedIfEmpty(): Promise<void> {

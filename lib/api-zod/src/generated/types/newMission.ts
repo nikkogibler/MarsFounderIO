@@ -11,6 +11,11 @@ export interface NewMission {
   name: string;
   buildId: string;
   objective: NewMissionObjective;
+  /**
+   * Operator-authored mission directive or descriptive prompt
+   * @nullable
+   */
+  missionBrief?: string | null;
   /** @nullable */
   targetMaterial?: string | null;
   durationSols: number;

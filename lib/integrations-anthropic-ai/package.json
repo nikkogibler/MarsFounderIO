@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
+    "openai": "^6.35.0",
     "p-limit": "^7.3.0",
     "p-retry": "^7.1.1"
   },

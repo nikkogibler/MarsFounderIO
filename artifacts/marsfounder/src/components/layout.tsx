@@ -82,7 +82,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <span className="font-sans font-black text-lg tracking-tighter uppercase text-foreground">
               Mars<span className="text-primary">Founder</span>
             </span>
-            <p>AWS OF MARS LABOR. WE DIG 'EM OUT.</p>
+            <p>ROBOTIC SURFACE OPERATIONS FOR MARS INFRASTRUCTURE.</p>
           </div>
           
           <div className="grid grid-cols-2 gap-x-12 gap-y-2 text-right">
@@ -93,7 +93,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <span>{marsTime?.sol || "WAITING"}</span>
             
             <span className="text-left text-foreground">SEASON</span>
-            <span>{marsTime?.season.replace('_', ' ') || "UNKNOWN"}</span>
+            <span>{marsTime?.season?.replace('_', ' ') || "UNKNOWN"}</span>
             
             <span className="text-left text-foreground">LIGHT DELAY</span>
             <span>{lightDelay?.seconds ? `${lightDelay.seconds}s (${lightDelay.trend})` : "CALCULATING"}</span>
@@ -102,7 +102,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         
         <div className="max-w-7xl mx-auto mt-12 pt-4 border-t border-border/50 flex justify-between items-center text-[10px] font-mono text-muted-foreground/50">
           <span>© 2026 MARSFOUNDER INC.</span>
-          <span>NOT AFFILIATED WITH NASA, SPACEX, OR LIQUID DEATH.</span>
+          <span>NOT AFFILIATED WITH NASA OR SPACEX.</span>
         </div>
       </footer>
     </div>

@@ -101,7 +101,7 @@ export default function MissionDetail() {
             {mission.name}
           </h1>
           <p className="font-mono text-muted-foreground mt-2 text-sm tracking-widest uppercase">
-            OBJECTIVE: {mission.objective} {mission.targetMaterial ? `[${mission.targetMaterial}]` : ''} • FOUNDER: {mission.founderHandle}
+            OBJECTIVE: {mission.objective} {mission.targetMaterial ? `[${mission.targetMaterial}]` : ''} • OPERATOR: {mission.founderHandle}
           </p>
         </div>
 
@@ -129,6 +129,16 @@ export default function MissionDetail() {
       <div className="flex flex-col lg:flex-row flex-1 min-h-[500px]">
         {/* Left: Telemetry Log */}
         <div className="lg:w-2/3 border-r border-border flex flex-col bg-card/10">
+          {mission.missionBrief && (
+            <div className="border-b border-border bg-background/70 p-6">
+              <div className="font-mono text-[10px] text-muted-foreground tracking-widest mb-3">
+                MISSION BRIEF / ROBOT PROMPT
+              </div>
+              <p className="font-mono text-sm text-foreground/85 leading-relaxed whitespace-pre-wrap">
+                {mission.missionBrief}
+              </p>
+            </div>
+          )}
           <div className="p-4 border-b border-border bg-card/50 flex justify-between items-center">
             <h3 className="font-sans font-black uppercase tracking-tight text-sm">SECURE TELEMETRY LOG</h3>
             <span className="font-mono text-[10px] text-muted-foreground flex items-center gap-2">

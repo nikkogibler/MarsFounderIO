@@ -12,6 +12,7 @@ export const missionsTable = pgTable("missions", {
   name: text("name").notNull(),
   buildId: uuid("build_id").notNull(),
   objective: text("objective").notNull(),
+  missionBrief: text("mission_brief"),
   targetMaterial: text("target_material"),
   durationSols: integer("duration_sols").notNull(),
   locationName: text("location_name").notNull(),

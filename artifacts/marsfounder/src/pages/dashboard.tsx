@@ -13,7 +13,7 @@ export default function Dashboard() {
         <div>
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Fleet Telemetry</h1>
           <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest">
-            Global operation statistics. Live updates.
+            Fleet-wide mission statistics and operating activity.
           </p>
         </div>
       </div>
@@ -38,11 +38,11 @@ export default function Dashboard() {
             <span className="font-mono text-4xl text-foreground">{summary.completedMissions}</span>
           </div>
           <div className="bg-card p-6 flex flex-col justify-between h-32 group hover:bg-primary/5 transition-colors">
-            <span className="font-mono text-[10px] text-muted-foreground tracking-widest group-hover:text-primary transition-colors">HARDWARE ON DIRT</span>
+            <span className="font-mono text-[10px] text-muted-foreground tracking-widest group-hover:text-primary transition-colors">DEPLOYED BUILDS</span>
             <span className="font-mono text-4xl text-foreground">{summary.botsOnSurface}</span>
           </div>
           <div className="bg-card p-6 flex flex-col justify-between h-32 group hover:bg-primary/5 transition-colors">
-            <span className="font-mono text-[10px] text-muted-foreground tracking-widest group-hover:text-primary transition-colors">ACTIVE FOUNDERS</span>
+            <span className="font-mono text-[10px] text-muted-foreground tracking-widest group-hover:text-primary transition-colors">OPERATORS</span>
             <span className="font-mono text-4xl text-foreground">{summary.founders}</span>
           </div>
           <div className="bg-card p-6 flex flex-col justify-between h-32 group hover:bg-primary/5 transition-colors">

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function MissionNew() {
   const [, setLocation] = useLocation();
@@ -23,6 +24,7 @@ export default function MissionNew() {
   const [longitude, setLongitude] = useState(-59.2);
   const [durationSols, setDurationSols] = useState(14);
   const [targetMaterial, setTargetMaterial] = useState("");
+  const [missionBrief, setMissionBrief] = useState("");
 
   const [feasibilityReport, setFeasibilityReport] = useState<any>(null);
 
@@ -35,6 +37,7 @@ export default function MissionNew() {
         name: missionName,
         buildId,
         objective: objective as any,
+        missionBrief: missionBrief || undefined,
         targetMaterial: targetMaterial || undefined,
         durationSols,
         locationName,
@@ -46,13 +49,13 @@ export default function MissionNew() {
       onSuccess: (mission) => {
         toast({
           title: "MISSION LAUNCHED",
-          description: "Asset deployed. Telemetry uplink established.",
+          description: "Mission created and telemetry monitoring started.",
         });
         setLocation(`/missions/${mission.id}`);
       },
       onError: (err) => {
         toast({
-          title: "LAUNCH ABORTED",
+          title: "MISSION CREATE FAILED",
           description: (err as any)?.data?.error || (err as Error)?.message || "Failed to create mission.",
           variant: "destructive",
         });
@@ -66,7 +69,7 @@ export default function MissionNew() {
         <div className="mb-12 border-b border-border pb-6">
           <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground mb-2">Deploy Asset</h1>
           <p className="font-mono text-muted-foreground text-sm uppercase tracking-widest">
-            Configure mission parameters and compute feasibility before launch.
+            Define mission parameters and assign a saved robotic build.
           </p>
         </div>
 
@@ -78,7 +81,7 @@ export default function MissionNew() {
               <Skeleton className="h-32 w-full rounded-none bg-border/50" />
             ) : builds?.length === 0 ? (
               <div className="border border-border p-8 text-center font-mono text-xs text-muted-foreground bg-card/50">
-                NO SAVED BUILDS. CONFIGURE AN ASSET FIRST.
+                NO SAVED BUILDS AVAILABLE. CREATE A BUILD BEFORE LAUNCHING A MISSION.
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -111,17 +114,17 @@ export default function MissionNew() {
                 <Input 
                   value={missionName} 
                   onChange={e => setMissionName(e.target.value)} 
-                  placeholder="e.g. OPERATION DUST DEVIL"
+                  placeholder="e.g. ARCADIA ICE SURVEY"
                   className="font-mono rounded-none border-border bg-card uppercase"
                   required
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="font-mono text-[10px] text-muted-foreground tracking-widest">FOUNDER HANDLE</label>
+                <label className="font-mono text-[10px] text-muted-foreground tracking-widest">OPERATOR HANDLE</label>
                 <Input 
                   value={founderHandle} 
                   onChange={e => setFounderHandle(e.target.value)} 
-                  placeholder="e.g. jcarmack"
+                  placeholder="e.g. mission-ops"
                   className="font-mono rounded-none border-border bg-card uppercase"
                   required
                 />
@@ -147,6 +150,20 @@ export default function MissionNew() {
                   placeholder="e.g. ICE, IRON"
                   className="font-mono rounded-none border-border bg-card uppercase"
                 />
+              </div>
+              <div className="flex flex-col gap-2 col-span-1 md:col-span-2">
+                <label className="font-mono text-[10px] text-muted-foreground tracking-widest">MISSION BRIEF / ROBOT PROMPT</label>
+                <Textarea
+                  value={missionBrief}
+                  onChange={e => setMissionBrief(e.target.value)}
+                  placeholder="Describe the mission objective, operating protocol, priority actions, constraints, and telemetry requirements."
+                  className="font-mono rounded-none border-border bg-card min-h-[180px] resize-y"
+                  maxLength={2200}
+                />
+                <div className="flex justify-between font-mono text-[10px] text-muted-foreground">
+                  <span>Optional directive sent with the mission record.</span>
+                  <span>{missionBrief.length}/2200</span>
+                </div>
               </div>
             </div>
           </div>
@@ -219,7 +236,7 @@ export default function MissionNew() {
               disabled={!buildId || !missionName || !founderHandle || createMission.isPending}
               className="flex-1 rounded-none font-bold font-mono uppercase tracking-widest bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground border border-primary disabled:opacity-50"
             >
-              {createMission.isPending ? 'LAUNCHING...' : 'DEPLOY ASSET'}
+              {createMission.isPending ? 'CREATING...' : 'CREATE MISSION'}
             </Button>
           </div>
         </form>
@@ -234,7 +251,7 @@ export default function MissionNew() {
         <div className="p-6 flex flex-col gap-6 font-mono text-sm">
           {!feasibilityReport ? (
             <div className="text-center text-muted-foreground opacity-70 py-12 text-xs uppercase tracking-widest leading-relaxed">
-              SIMULATION RUNS POST-DEPLOYMENT.<br/><br/>DEPLOY THE ASSET. WE'LL RUN THE NUMBERS AGAINST LIVE TELEMETRY ON THE MISSION DETAIL VIEW.
+              FEASIBILITY ANALYSIS RUNS AFTER THE MISSION IS CREATED.<br/><br/>OPEN THE MISSION DETAIL VIEW TO EVALUATE THE ACTIVE PLAN AGAINST CURRENT TELEMETRY.
             </div>
           ) : (
             <>

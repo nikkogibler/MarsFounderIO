@@ -181,6 +181,10 @@ export const ListMissionsResponseItem = zod.object({
   name: zod.string(),
   buildId: zod.string(),
   objective: zod.enum(["MINE", "BUILD", "SURVEY", "REPAIR", "RELAY", "RESCUE"]),
+  missionBrief: zod
+    .string()
+    .nullish()
+    .describe("Operator-authored mission directive or descriptive prompt"),
   targetMaterial: zod.string().nullish(),
   durationSols: zod.number(),
   locationName: zod.string(),
@@ -207,6 +211,10 @@ export const CreateMissionBody = zod.object({
   name: zod.string(),
   buildId: zod.string(),
   objective: zod.enum(["MINE", "BUILD", "SURVEY", "REPAIR", "RELAY", "RESCUE"]),
+  missionBrief: zod
+    .string()
+    .nullish()
+    .describe("Operator-authored mission directive or descriptive prompt"),
   targetMaterial: zod.string().nullish(),
   durationSols: zod.number(),
   locationName: zod.string(),
@@ -235,6 +243,10 @@ export const GetMissionResponse = zod
       "RELAY",
       "RESCUE",
     ]),
+    missionBrief: zod
+      .string()
+      .nullish()
+      .describe("Operator-authored mission directive or descriptive prompt"),
     targetMaterial: zod.string().nullish(),
     durationSols: zod.number(),
     locationName: zod.string(),
