@@ -64,9 +64,6 @@ export default function Adf() {
           <div className="border border-border bg-card/40 p-4 flex flex-col gap-4">
             <div>
               <h2 className="text-sm font-black uppercase tracking-widest text-foreground">ADF Index</h2>
-              <p className="mt-2 font-mono text-xs leading-6 text-muted-foreground uppercase tracking-wide">
-                Pulled from the checked-in markdown document and rendered with the existing site theme.
-              </p>
             </div>
 
             <nav className="flex flex-col gap-2">
