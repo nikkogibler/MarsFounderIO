@@ -54,9 +54,6 @@ export default function Adf() {
         <span className="font-mono text-xs uppercase tracking-[0.35em] text-primary">
           Autonomous Deployment Framework
         </span>
-        <p className="font-mono text-sm leading-7 text-muted-foreground max-w-5xl">
-          Rendered directly from {SOURCE_LABEL} so the site uses the repo document as the source of truth.
-        </p>
       </div>
 
       <div className="grid gap-8 xl:grid-cols-[260px_minmax(0,1fr)] items-start">
