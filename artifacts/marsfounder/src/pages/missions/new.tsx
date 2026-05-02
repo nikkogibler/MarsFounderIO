@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
+import { MarsParcel, MarsParcelGlobe } from "@/components/mars-parcel-globe";
 
 export default function MissionNew() {
   const [, setLocation] = useLocation();
@@ -25,8 +26,16 @@ export default function MissionNew() {
   const [durationSols, setDurationSols] = useState(14);
   const [targetMaterial, setTargetMaterial] = useState("");
   const [missionBrief, setMissionBrief] = useState("");
+  const [selectedParcel, setSelectedParcel] = useState<MarsParcel>();
 
   const [feasibilityReport, setFeasibilityReport] = useState<any>(null);
+
+  const handleSelectParcel = (parcel: MarsParcel) => {
+    setSelectedParcel(parcel);
+    setLatitude(parcel.centerLat);
+    setLongitude(parcel.centerLng);
+    setLocationName(parcel.regionName);
+  };
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,8 +89,17 @@ export default function MissionNew() {
             {loadingBuilds ? (
               <Skeleton className="h-32 w-full rounded-none bg-border/50" />
             ) : builds?.length === 0 ? (
-              <div className="border border-border p-8 text-center font-mono text-xs text-muted-foreground bg-card/50">
-                NO SAVED BUILDS AVAILABLE. CREATE A BUILD BEFORE LAUNCHING A MISSION.
+              <div className="border border-border p-8 text-center font-mono text-xs text-muted-foreground bg-card/50 flex flex-col items-center gap-4">
+                <div>
+                  NO SAVED BUILDS AVAILABLE. CREATE A BUILD BEFORE LAUNCHING A MISSION.
+                </div>
+                <Button
+                  type="button"
+                  onClick={() => setLocation("/configure")}
+                  className="rounded-none font-bold font-mono uppercase tracking-widest bg-primary text-primary-foreground hover:bg-accent hover:text-accent-foreground border border-primary"
+                >
+                  Open Configurator
+                </Button>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -242,62 +260,71 @@ export default function MissionNew() {
         </form>
       </div>
 
-      {/* AI Feasibility Report Sidebar */}
-      <div className="lg:w-1/3 border border-border bg-card/30 flex flex-col sticky top-24 self-start">
-        <div className="p-4 border-b border-border bg-secondary text-secondary-foreground flex justify-between items-center">
-          <h3 className="font-sans font-black uppercase tracking-tight">AI SIMULATION REPORT</h3>
-        </div>
-        
-        <div className="p-6 flex flex-col gap-6 font-mono text-sm">
-          {!feasibilityReport ? (
-            <div className="text-center text-muted-foreground opacity-70 py-12 text-xs uppercase tracking-widest leading-relaxed">
-              FEASIBILITY ANALYSIS RUNS AFTER THE MISSION IS CREATED.<br/><br/>OPEN THE MISSION DETAIL VIEW TO EVALUATE THE ACTIVE PLAN AGAINST CURRENT TELEMETRY.
-            </div>
-          ) : (
-            <>
-              <div className="flex flex-col gap-2">
-                <span className="text-[10px] text-muted-foreground tracking-widest">SUMMARY</span>
-                <p className="text-foreground leading-relaxed bg-background/50 p-4 border-l-2 border-primary">
-                  {feasibilityReport.summary}
-                </p>
-              </div>
+      <div className="lg:w-1/3 flex flex-col gap-6 sticky top-24 self-start">
+        <MarsParcelGlobe
+          latitude={latitude}
+          longitude={longitude}
+          selectedParcelId={selectedParcel?.id}
+          onSelectParcel={handleSelectParcel}
+        />
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1 bg-background/50 p-3 border border-border">
-                  <span className="text-[10px] text-muted-foreground tracking-widest">ESTIMATED COST</span>
-                  <span className="text-xl text-primary">{feasibilityReport.estimatedCostCredits} <span className="text-xs text-muted-foreground">CR</span></span>
-                </div>
-                <div className="flex flex-col gap-1 bg-background/50 p-3 border border-border">
-                  <span className="text-[10px] text-muted-foreground tracking-widest">ENERGY REQ.</span>
-                  <span className="text-xl text-accent">{feasibilityReport.estimatedEnergyKwh} <span className="text-xs text-muted-foreground">kWh</span></span>
-                </div>
-                <div className="flex flex-col gap-1 bg-background/50 p-3 border border-border">
-                  <span className="text-[10px] text-muted-foreground tracking-widest">DURATION</span>
-                  <span className="text-xl text-foreground">{feasibilityReport.estimatedDurationSols} <span className="text-xs text-muted-foreground">SOLS</span></span>
-                </div>
-                <div className="flex flex-col gap-1 bg-background/50 p-3 border border-border">
-                  <span className="text-[10px] text-muted-foreground tracking-widest">CONFIDENCE</span>
-                  <span className="text-xl text-foreground">{feasibilityReport.confidencePercent}%</span>
-                </div>
+        {/* AI Feasibility Report Sidebar */}
+        <div className="border border-border bg-card/30 flex flex-col">
+          <div className="p-4 border-b border-border bg-secondary text-secondary-foreground flex justify-between items-center">
+            <h3 className="font-sans font-black uppercase tracking-tight">AI SIMULATION REPORT</h3>
+          </div>
+          
+          <div className="p-6 flex flex-col gap-6 font-mono text-sm">
+            {!feasibilityReport ? (
+              <div className="text-center text-muted-foreground opacity-70 py-12 text-xs uppercase tracking-widest leading-relaxed">
+                FEASIBILITY ANALYSIS RUNS AFTER THE MISSION IS CREATED.<br/><br/>OPEN THE MISSION DETAIL VIEW TO EVALUATE THE ACTIVE PLAN AGAINST CURRENT TELEMETRY.
               </div>
-
-              <div className="flex flex-col gap-2 mt-4">
-                <span className="text-[10px] text-muted-foreground tracking-widest">IDENTIFIED RISKS</span>
+            ) : (
+              <>
                 <div className="flex flex-col gap-2">
-                  {feasibilityReport.risks.map((risk: any, i: number) => (
-                    <div key={i} className={`p-3 border text-xs ${
-                      risk.level === 'CRITICAL' ? 'border-destructive bg-destructive/10 text-destructive' :
-                      risk.level === 'HIGH' ? 'border-accent bg-accent/10 text-accent' :
-                      'border-border bg-background/50 text-foreground'
-                    }`}>
-                      <span className="font-bold mr-2">[{risk.level}]</span>
-                      {risk.description}
-                    </div>
-                  ))}
+                  <span className="text-[10px] text-muted-foreground tracking-widest">SUMMARY</span>
+                  <p className="text-foreground leading-relaxed bg-background/50 p-4 border border-border">
+                    {feasibilityReport.summary}
+                  </p>
                 </div>
-              </div>
-            </>
-          )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1 bg-background/50 p-3 border border-border">
+                    <span className="text-[10px] text-muted-foreground tracking-widest">ESTIMATED COST</span>
+                    <span className="text-xl text-primary">{feasibilityReport.estimatedCostCredits} <span className="text-xs text-muted-foreground">CR</span></span>
+                  </div>
+                  <div className="flex flex-col gap-1 bg-background/50 p-3 border border-border">
+                    <span className="text-[10px] text-muted-foreground tracking-widest">ENERGY REQ.</span>
+                    <span className="text-xl text-accent">{feasibilityReport.estimatedEnergyKwh} <span className="text-xs text-muted-foreground">kWh</span></span>
+                  </div>
+                  <div className="flex flex-col gap-1 bg-background/50 p-3 border border-border">
+                    <span className="text-[10px] text-muted-foreground tracking-widest">DURATION</span>
+                    <span className="text-xl text-foreground">{feasibilityReport.estimatedDurationSols} <span className="text-xs text-muted-foreground">SOLS</span></span>
+                  </div>
+                  <div className="flex flex-col gap-1 bg-background/50 p-3 border border-border">
+                    <span className="text-[10px] text-muted-foreground tracking-widest">CONFIDENCE</span>
+                    <span className="text-xl text-foreground">{feasibilityReport.confidencePercent}%</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2 mt-4">
+                  <span className="text-[10px] text-muted-foreground tracking-widest">IDENTIFIED RISKS</span>
+                  <div className="flex flex-col gap-2">
+                    {feasibilityReport.risks.map((risk: any, i: number) => (
+                      <div key={i} className={`p-3 border text-xs ${
+                        risk.level === 'CRITICAL' ? 'border-destructive bg-destructive/10 text-destructive' :
+                        risk.level === 'HIGH' ? 'border-accent bg-accent/10 text-accent' :
+                        'border-border bg-background/50 text-foreground'
+                      }`}>
+                        <span className="font-bold mr-2">[{risk.level}]</span>
+                        {risk.description}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
