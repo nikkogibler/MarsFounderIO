@@ -36,7 +36,11 @@ import type {
   PersonaPrompt,
   PersonaReply,
   RecentMissionActivity,
+  RegistryOverrides,
+  RegistryParcelOverride,
+  RegistrySectorOverride,
   Tool,
+  UpsertRegistryBody,
   WaitlistEntry,
 } from "./api.schemas";
 
@@ -1060,6 +1064,261 @@ export function useListRecentMissionActivity<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * @summary Get all saved sector and parcel naming overrides
+ */
+export const getGetRegistryOverridesUrl = () => {
+  return `/api/registry/overrides`;
+};
+
+export const getRegistryOverrides = async (
+  options?: RequestInit,
+): Promise<RegistryOverrides> => {
+  return customFetch<RegistryOverrides>(getGetRegistryOverridesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetRegistryOverridesQueryKey = () => {
+  return [`/api/registry/overrides`] as const;
+};
+
+export const getGetRegistryOverridesQueryOptions = <
+  TData = Awaited<ReturnType<typeof getRegistryOverrides>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getRegistryOverrides>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetRegistryOverridesQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getRegistryOverrides>>
+  > = ({ signal }) => getRegistryOverrides({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getRegistryOverrides>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetRegistryOverridesQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getRegistryOverrides>>
+>;
+export type GetRegistryOverridesQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get all saved sector and parcel naming overrides
+ */
+
+export function useGetRegistryOverrides<
+  TData = Awaited<ReturnType<typeof getRegistryOverrides>>,
+  TError = ErrorType<unknown>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getRegistryOverrides>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetRegistryOverridesQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create or update a sector registry override
+ */
+export const getUpsertRegistrySectorUrl = (sectorId: string) => {
+  return `/api/registry/sectors/${sectorId}`;
+};
+
+export const upsertRegistrySector = async (
+  sectorId: string,
+  upsertRegistryBody: UpsertRegistryBody,
+  options?: RequestInit,
+): Promise<RegistrySectorOverride> => {
+  return customFetch<RegistrySectorOverride>(
+    getUpsertRegistrySectorUrl(sectorId),
+    {
+      ...options,
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(upsertRegistryBody),
+    },
+  );
+};
+
+export const getUpsertRegistrySectorMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof upsertRegistrySector>>,
+    TError,
+    { sectorId: string; data: BodyType<UpsertRegistryBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof upsertRegistrySector>>,
+  TError,
+  { sectorId: string; data: BodyType<UpsertRegistryBody> },
+  TContext
+> => {
+  const mutationKey = ["upsertRegistrySector"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof upsertRegistrySector>>,
+    { sectorId: string; data: BodyType<UpsertRegistryBody> }
+  > = (props) => {
+    const { sectorId, data } = props ?? {};
+
+    return upsertRegistrySector(sectorId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpsertRegistrySectorMutationResult = NonNullable<
+  Awaited<ReturnType<typeof upsertRegistrySector>>
+>;
+export type UpsertRegistrySectorMutationBody = BodyType<UpsertRegistryBody>;
+export type UpsertRegistrySectorMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Create or update a sector registry override
+ */
+export const useUpsertRegistrySector = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof upsertRegistrySector>>,
+    TError,
+    { sectorId: string; data: BodyType<UpsertRegistryBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof upsertRegistrySector>>,
+  TError,
+  { sectorId: string; data: BodyType<UpsertRegistryBody> },
+  TContext
+> => {
+  return useMutation(getUpsertRegistrySectorMutationOptions(options));
+};
+
+/**
+ * @summary Create or update a parcel registry override
+ */
+export const getUpsertRegistryParcelUrl = (parcelId: string) => {
+  return `/api/registry/parcels/${parcelId}`;
+};
+
+export const upsertRegistryParcel = async (
+  parcelId: string,
+  upsertRegistryBody: UpsertRegistryBody,
+  options?: RequestInit,
+): Promise<RegistryParcelOverride> => {
+  return customFetch<RegistryParcelOverride>(
+    getUpsertRegistryParcelUrl(parcelId),
+    {
+      ...options,
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...options?.headers },
+      body: JSON.stringify(upsertRegistryBody),
+    },
+  );
+};
+
+export const getUpsertRegistryParcelMutationOptions = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof upsertRegistryParcel>>,
+    TError,
+    { parcelId: string; data: BodyType<UpsertRegistryBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof upsertRegistryParcel>>,
+  TError,
+  { parcelId: string; data: BodyType<UpsertRegistryBody> },
+  TContext
+> => {
+  const mutationKey = ["upsertRegistryParcel"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof upsertRegistryParcel>>,
+    { parcelId: string; data: BodyType<UpsertRegistryBody> }
+  > = (props) => {
+    const { parcelId, data } = props ?? {};
+
+    return upsertRegistryParcel(parcelId, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpsertRegistryParcelMutationResult = NonNullable<
+  Awaited<ReturnType<typeof upsertRegistryParcel>>
+>;
+export type UpsertRegistryParcelMutationBody = BodyType<UpsertRegistryBody>;
+export type UpsertRegistryParcelMutationError = ErrorType<ApiError>;
+
+/**
+ * @summary Create or update a parcel registry override
+ */
+export const useUpsertRegistryParcel = <
+  TError = ErrorType<ApiError>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof upsertRegistryParcel>>,
+    TError,
+    { parcelId: string; data: BodyType<UpsertRegistryBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof upsertRegistryParcel>>,
+  TError,
+  { parcelId: string; data: BodyType<UpsertRegistryBody> },
+  TContext
+> => {
+  return useMutation(getUpsertRegistryParcelMutationOptions(options));
+};
 
 /**
  * @summary Get a persona reply from a specific bot (with mocked voice URL)

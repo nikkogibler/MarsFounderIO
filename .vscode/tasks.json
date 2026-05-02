@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run MarsFounder frontend (mock API)",
+			"type": "shell",
+			"command": "pnpm",
+			"args": [
+				"-C",
+				"artifacts/marsfounder",
+				"dev"
+			],
+			"isBackground": true,
+			"group": "build"
+		}
+	]
+}

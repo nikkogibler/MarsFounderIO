@@ -20,6 +20,10 @@ export interface NewMission {
   targetMaterial?: string | null;
   durationSols: number;
   locationName: string;
+  /** @nullable */
+  sectorId?: string | null;
+  /** @nullable */
+  parcelId?: string | null;
   latitude: number;
   longitude: number;
   founderHandle: string;

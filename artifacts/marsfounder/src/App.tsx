@@ -12,9 +12,10 @@ import Configure from "@/pages/configure";
 import MissionsList from "@/pages/missions/index";
 import MissionNew from "@/pages/missions/new";
 import MissionDetail from "@/pages/missions/[missionId]";
-import Marketplace from "@/pages/marketplace";
 import Adf from "@/pages/adf";
+import Marketplace from "@/pages/marketplace";
 import Dashboard from "@/pages/dashboard";
+import Registry from "@/pages/registry";
 import Waitlist from "@/pages/waitlist";
 import Roadmap from "@/pages/roadmap";
 
@@ -29,8 +30,9 @@ function Router() {
       <Route path="/configure" component={Configure} />
       <Route path="/missions" component={MissionsList} />
       <Route path="/missions/new" component={MissionNew} />
-      <Route path="/adf" component={Adf} />
       <Route path="/missions/:missionId" component={MissionDetail} />
+      <Route path="/adf" component={Adf} />
+      <Route path="/registry" component={Registry} />
       <Route path="/marketplace" component={Marketplace} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/waitlist" component={Waitlist} />

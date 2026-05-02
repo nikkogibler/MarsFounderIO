@@ -188,6 +188,8 @@ export const ListMissionsResponseItem = zod.object({
   targetMaterial: zod.string().nullish(),
   durationSols: zod.number(),
   locationName: zod.string(),
+  sectorId: zod.string().nullish(),
+  parcelId: zod.string().nullish(),
   latitude: zod.number().describe("Mars latitude (-90 to 90)"),
   longitude: zod.number().describe("Mars longitude (-180 to 180)"),
   status: zod.enum([
@@ -218,6 +220,8 @@ export const CreateMissionBody = zod.object({
   targetMaterial: zod.string().nullish(),
   durationSols: zod.number(),
   locationName: zod.string(),
+  sectorId: zod.string().nullish(),
+  parcelId: zod.string().nullish(),
   latitude: zod.number(),
   longitude: zod.number(),
   founderHandle: zod.string(),
@@ -250,6 +254,8 @@ export const GetMissionResponse = zod
     targetMaterial: zod.string().nullish(),
     durationSols: zod.number(),
     locationName: zod.string(),
+    sectorId: zod.string().nullish(),
+    parcelId: zod.string().nullish(),
     latitude: zod.number().describe("Mars latitude (-90 to 90)"),
     longitude: zod.number().describe("Mars longitude (-180 to 180)"),
     status: zod.enum([
@@ -325,6 +331,76 @@ export const ListRecentMissionActivityResponseItem = zod.object({
 export const ListRecentMissionActivityResponse = zod.array(
   ListRecentMissionActivityResponseItem,
 );
+
+/**
+ * @summary Get all saved sector and parcel naming overrides
+ */
+export const GetRegistryOverridesResponse = zod.object({
+  sectors: zod.array(
+    zod.object({
+      sectorId: zod.string(),
+      displayName: zod.string(),
+      notes: zod.string().nullish(),
+      updatedBy: zod.string(),
+      createdAt: zod.coerce.date(),
+      updatedAt: zod.coerce.date(),
+    }),
+  ),
+  parcels: zod.array(
+    zod.object({
+      parcelId: zod.string(),
+      displayName: zod.string(),
+      notes: zod.string().nullish(),
+      updatedBy: zod.string(),
+      createdAt: zod.coerce.date(),
+      updatedAt: zod.coerce.date(),
+    }),
+  ),
+});
+
+/**
+ * @summary Create or update a sector registry override
+ */
+export const UpsertRegistrySectorParams = zod.object({
+  sectorId: zod.coerce.string(),
+});
+
+export const UpsertRegistrySectorBody = zod.object({
+  displayName: zod.string(),
+  notes: zod.string().nullish(),
+  founderHandle: zod.string(),
+});
+
+export const UpsertRegistrySectorResponse = zod.object({
+  sectorId: zod.string(),
+  displayName: zod.string(),
+  notes: zod.string().nullish(),
+  updatedBy: zod.string(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Create or update a parcel registry override
+ */
+export const UpsertRegistryParcelParams = zod.object({
+  parcelId: zod.coerce.string(),
+});
+
+export const UpsertRegistryParcelBody = zod.object({
+  displayName: zod.string(),
+  notes: zod.string().nullish(),
+  founderHandle: zod.string(),
+});
+
+export const UpsertRegistryParcelResponse = zod.object({
+  parcelId: zod.string(),
+  displayName: zod.string(),
+  notes: zod.string().nullish(),
+  updatedBy: zod.string(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
 
 /**
  * @summary Get a persona reply from a specific bot (with mocked voice URL)

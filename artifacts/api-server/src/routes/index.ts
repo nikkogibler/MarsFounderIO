@@ -9,6 +9,7 @@ import waitlistRouter from "./waitlist";
 import ambientRouter from "./ambient";
 import marketplaceRouter from "./marketplace";
 import dashboardRouter from "./dashboard";
+import registryRouter from "./registry";
 
 const router: IRouter = Router();
 
@@ -22,5 +23,6 @@ router.use(waitlistRouter);
 router.use(ambientRouter);
 router.use(marketplaceRouter);
 router.use(dashboardRouter);
+router.use(registryRouter);
 
 export default router;

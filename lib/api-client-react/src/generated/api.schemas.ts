@@ -126,6 +126,38 @@ export interface NewBuild {
   founderHandle: string;
 }
 
+export interface RegistrySectorOverride {
+  sectorId: string;
+  displayName: string;
+  /** @nullable */
+  notes?: string | null;
+  updatedBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RegistryParcelOverride {
+  parcelId: string;
+  displayName: string;
+  /** @nullable */
+  notes?: string | null;
+  updatedBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RegistryOverrides {
+  sectors: RegistrySectorOverride[];
+  parcels: RegistryParcelOverride[];
+}
+
+export interface UpsertRegistryBody {
+  displayName: string;
+  /** @nullable */
+  notes?: string | null;
+  founderHandle: string;
+}
+
 export type MissionObjective =
   (typeof MissionObjective)[keyof typeof MissionObjective];
 
@@ -163,6 +195,10 @@ export interface Mission {
   targetMaterial?: string | null;
   durationSols: number;
   locationName: string;
+  /** @nullable */
+  sectorId?: string | null;
+  /** @nullable */
+  parcelId?: string | null;
   /** Mars latitude (-90 to 90) */
   latitude: number;
   /** Mars longitude (-180 to 180) */
@@ -198,6 +234,10 @@ export interface NewMission {
   targetMaterial?: string | null;
   durationSols: number;
   locationName: string;
+  /** @nullable */
+  sectorId?: string | null;
+  /** @nullable */
+  parcelId?: string | null;
   latitude: number;
   longitude: number;
   founderHandle: string;

@@ -1,20 +1,36 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocation } from "wouter";
-import { useListBuilds, useCreateMission, NewMissionObjective } from "@workspace/api-client-react";
+import {
+  useListBuilds,
+  useCreateMission,
+  useGetRegistryOverrides,
+  NewMissionObjective,
+} from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
-import { MarsParcel, MarsParcelGlobe } from "@/components/mars-parcel-globe";
+import { MarsParcelGlobe } from "@/components/mars-parcel-globe";
+import {
+  applyRegistryOverrides,
+  generateMarsParcels,
+  type MarsParcel,
+} from "@/lib/mars-registry";
 
 export default function MissionNew() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   
   const { data: builds, isLoading: loadingBuilds } = useListBuilds();
+  const { data: registryOverrides } = useGetRegistryOverrides();
   const createMission = useCreateMission();
+  const baseParcels = useMemo(() => generateMarsParcels(), []);
+  const parcels = useMemo(
+    () => applyRegistryOverrides(baseParcels, registryOverrides),
+    [baseParcels, registryOverrides],
+  );
 
   const [buildId, setBuildId] = useState("");
   const [objective, setObjective] = useState<keyof typeof NewMissionObjective>("SURVEY");
@@ -26,12 +42,16 @@ export default function MissionNew() {
   const [durationSols, setDurationSols] = useState(14);
   const [targetMaterial, setTargetMaterial] = useState("");
   const [missionBrief, setMissionBrief] = useState("");
-  const [selectedParcel, setSelectedParcel] = useState<MarsParcel>();
+  const [selectedParcelId, setSelectedParcelId] = useState<string>();
 
   const [feasibilityReport, setFeasibilityReport] = useState<any>(null);
+  const selectedParcel = useMemo(
+    () => parcels.find((parcel) => parcel.id === selectedParcelId),
+    [parcels, selectedParcelId],
+  );
 
   const handleSelectParcel = (parcel: MarsParcel) => {
-    setSelectedParcel(parcel);
+    setSelectedParcelId(parcel.id);
     setLatitude(parcel.centerLat);
     setLongitude(parcel.centerLng);
     setLocationName(parcel.regionName);
@@ -50,6 +70,8 @@ export default function MissionNew() {
         targetMaterial: targetMaterial || undefined,
         durationSols,
         locationName,
+        sectorId: selectedParcel?.sectorId || undefined,
+        parcelId: selectedParcel?.id || undefined,
         latitude,
         longitude,
         founderHandle,
@@ -262,11 +284,21 @@ export default function MissionNew() {
 
       <div className="lg:w-1/3 flex flex-col gap-6 sticky top-24 self-start">
         <MarsParcelGlobe
+          parcels={parcels}
           latitude={latitude}
           longitude={longitude}
-          selectedParcelId={selectedParcel?.id}
+          selectedParcelId={selectedParcelId}
           onSelectParcel={handleSelectParcel}
         />
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setLocation("/registry")}
+          className="rounded-none font-mono uppercase tracking-widest"
+        >
+          Open Land Registry
+        </Button>
 
         {/* AI Feasibility Report Sidebar */}
         <div className="border border-border bg-card/30 flex flex-col">

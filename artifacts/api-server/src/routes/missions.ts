@@ -63,6 +63,8 @@ router.post("/missions", async (req, res): Promise<void> => {
     ["name", data.name, 80],
     ["locationName", data.locationName, 80],
     ["founderHandle", data.founderHandle, 40],
+    ["sectorId", data.sectorId, 40],
+    ["parcelId", data.parcelId, 40],
     ["targetMaterial", data.targetMaterial, 60],
     ["missionBrief", data.missionBrief, 2200],
   ];
@@ -102,6 +104,8 @@ router.post("/missions", async (req, res): Promise<void> => {
       targetMaterial: data.targetMaterial ?? null,
       durationSols: data.durationSols,
       locationName: data.locationName,
+      sectorId: data.sectorId ?? null,
+      parcelId: data.parcelId ?? null,
       latitude: data.latitude,
       longitude: data.longitude,
       founderHandle: data.founderHandle,

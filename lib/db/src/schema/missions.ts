@@ -16,6 +16,8 @@ export const missionsTable = pgTable("missions", {
   targetMaterial: text("target_material"),
   durationSols: integer("duration_sols").notNull(),
   locationName: text("location_name").notNull(),
+  sectorId: text("sector_id"),
+  parcelId: text("parcel_id"),
   latitude: doublePrecision("latitude").notNull(),
   longitude: doublePrecision("longitude").notNull(),
   status: text("status").notNull().default("QUEUED"),

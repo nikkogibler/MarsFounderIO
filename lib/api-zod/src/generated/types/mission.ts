@@ -22,6 +22,10 @@ export interface Mission {
   targetMaterial?: string | null;
   durationSols: number;
   locationName: string;
+  /** @nullable */
+  sectorId?: string | null;
+  /** @nullable */
+  parcelId?: string | null;
   /** Mars latitude (-90 to 90) */
   latitude: number;
   /** Mars longitude (-180 to 180) */

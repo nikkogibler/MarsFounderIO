@@ -3,34 +3,10 @@ import { Canvas, ThreeEvent, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { CanvasErrorBoundary } from "@/components/canvas-error-boundary";
-
-export type MarsParcelStatus =
-  | "UNSURVEYED"
-  | "SURVEYING"
-  | "READY"
-  | "UNDER_CONSTRUCTION"
-  | "ACTIVE";
-
-export type MarsParcel = {
-  id: string;
-  parcelName: string;
-  sectorId: string;
-  sectorLabel: string;
-  sectorName: string;
-  centerLat: number;
-  centerLng: number;
-  regionName: string;
-  status: MarsParcelStatus;
-  terrainClass: "BASIN" | "CRATER" | "CANYON" | "PLAIN" | "ICE_FIELD" | "VOLCANIC";
-  resourceSignals: {
-    ice: number;
-    regolith: number;
-    metals: number;
-    solar: number;
-  };
-};
+import { generateMarsParcels, type MarsParcel, type MarsParcelStatus } from "@/lib/mars-registry";
 
 type MarsParcelGlobeProps = {
+  parcels?: MarsParcel[];
   latitude: number;
   longitude: number;
   selectedParcelId?: string;
@@ -49,30 +25,6 @@ const STATUS_COLORS: Record<MarsParcelStatus, string> = {
   ACTIVE: "#65f0a3",
 };
 
-const TERRAIN_BY_BAND: MarsParcel["terrainClass"][] = [
-  "ICE_FIELD",
-  "PLAIN",
-  "CRATER",
-  "CANYON",
-  "BASIN",
-  "VOLCANIC",
-  "PLAIN",
-  "ICE_FIELD",
-];
-
-const BAND_NAMES = [
-  "Australe Crown",
-  "Cimmeria Reach",
-  "Sirenum Expanse",
-  "Aonia Verge",
-  "Elysium Verge",
-  "Arcadia Reach",
-  "Utopia Rise",
-  "Borealis Crown",
-];
-
-const QUADRANT_NAMES = ["Far West", "West", "East", "Far East"];
-
 function detectWebGL(): boolean {
   if (typeof window === "undefined") return false;
   try {
@@ -85,76 +37,6 @@ function detectWebGL(): boolean {
   } catch {
     return false;
   }
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
-
-function pseudoNoise(seed: number) {
-  const x = Math.sin(seed * 12.9898) * 43758.5453;
-  return x - Math.floor(x);
-}
-
-function getQuadrantIndex(longitude: number) {
-  const shiftedLongitude = longitude + 180;
-  return Math.min(3, Math.max(0, Math.floor(shiftedLongitude / 90)));
-}
-
-export function generateMarsParcels(): MarsParcel[] {
-  const bands = [-70, -50, -30, -10, 10, 30, 50, 70];
-
-  return bands.flatMap((lat, bandIndex) => {
-    const count = Math.max(8, Math.round(24 * Math.cos(THREE.MathUtils.degToRad(lat))));
-    const step = 360 / count;
-    const offset = bandIndex % 2 === 0 ? 0 : step / 2;
-    const parcelsPerQuadrant = [0, 0, 0, 0];
-    const bandName = BAND_NAMES[bandIndex] ?? `Band ${bandIndex + 1}`;
-
-    return Array.from({ length: count }, (_, cellIndex) => {
-      const lng = -180 + offset + cellIndex * step;
-      const seed = (bandIndex + 1) * 100 + cellIndex + 1;
-      const quadrantIndex = getQuadrantIndex(lng);
-      const sectorId = `MARS-SEC-${String(bandIndex + 1).padStart(2, "0")}-${quadrantIndex + 1}`;
-      const sectorLabel = `${String.fromCharCode(65 + bandIndex)}-Q${quadrantIndex + 1}`;
-      const sectorName = `${bandName} ${QUADRANT_NAMES[quadrantIndex]}`;
-      const parcelNumber = ++parcelsPerQuadrant[quadrantIndex];
-      const parcelName = `Plot ${sectorLabel}-${String(parcelNumber).padStart(2, "0")}`;
-      const terrainClass = TERRAIN_BY_BAND[bandIndex] ?? "PLAIN";
-      const polarBoost = Math.abs(lat) > 55 ? 35 : 0;
-      const canyonBoost = terrainClass === "CANYON" ? 28 : 0;
-      const volcanicBoost = terrainClass === "VOLCANIC" ? 26 : 0;
-      const status: MarsParcelStatus =
-        seed % 19 === 0
-          ? "ACTIVE"
-          : seed % 13 === 0
-            ? "UNDER_CONSTRUCTION"
-            : seed % 7 === 0
-              ? "SURVEYING"
-              : seed % 5 === 0
-                ? "READY"
-                : "UNSURVEYED";
-
-      return {
-        id: `MARS-${String(bandIndex + 1).padStart(2, "0")}-${String(cellIndex + 1).padStart(3, "0")}`,
-        parcelName,
-        sectorId,
-        sectorLabel,
-        sectorName,
-        centerLat: lat,
-        centerLng: Number(lng.toFixed(2)),
-        regionName: `${sectorName} / ${parcelName}`,
-        status,
-        terrainClass,
-        resourceSignals: {
-          ice: clamp(Math.round(20 + polarBoost + pseudoNoise(seed) * 45), 0, 100),
-          regolith: clamp(Math.round(45 + pseudoNoise(seed + 4) * 45), 0, 100),
-          metals: clamp(Math.round(15 + volcanicBoost + pseudoNoise(seed + 8) * 55), 0, 100),
-          solar: clamp(Math.round(80 - Math.abs(lat) * 0.65 + pseudoNoise(seed + 12) * 14), 0, 100),
-        },
-      };
-    });
-  });
 }
 
 function latLngToVector(lat: number, lng: number, radius = GLOBE_RADIUS) {
@@ -388,6 +270,7 @@ function ParcelReadout({ parcel }: { parcel?: MarsParcel }) {
 }
 
 export function MarsParcelGlobe({
+  parcels: parcelsProp,
   latitude,
   longitude,
   selectedParcelId,
@@ -397,7 +280,7 @@ export function MarsParcelGlobe({
 }: MarsParcelGlobeProps) {
   const [webglOk, setWebglOk] = useState(false);
   const [hoveredParcel, setHoveredParcel] = useState<MarsParcel>();
-  const parcels = useMemo(() => generateMarsParcels(), []);
+  const parcels = useMemo(() => parcelsProp ?? generateMarsParcels(), [parcelsProp]);
   const sectorCount = useMemo(
     () => new Set(parcels.map((parcel) => parcel.sectorId)).size,
     [parcels],

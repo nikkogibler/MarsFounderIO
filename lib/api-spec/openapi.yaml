@@ -28,6 +28,8 @@ tags:
     description: Skill marketplace
   - name: dashboard
     description: Dashboard / activity
+  - name: registry
+    description: Parcel and sector naming registry
 paths:
   /healthz:
     get:
@@ -272,6 +274,81 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/RecentMissionActivity"
+
+  /registry/overrides:
+    get:
+      operationId: getRegistryOverrides
+      tags: [registry]
+      summary: Get all saved sector and parcel naming overrides
+      responses:
+        "200":
+          description: Registry override payload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistryOverrides"
+
+  /registry/sectors/{sectorId}:
+    put:
+      operationId: upsertRegistrySector
+      tags: [registry]
+      summary: Create or update a sector registry override
+      parameters:
+        - name: sectorId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertRegistryBody"
+      responses:
+        "200":
+          description: Saved sector override
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistrySectorOverride"
+        "400":
+          description: Invalid override data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /registry/parcels/{parcelId}:
+    put:
+      operationId: upsertRegistryParcel
+      tags: [registry]
+      summary: Create or update a parcel registry override
+      parameters:
+        - name: parcelId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertRegistryBody"
+      responses:
+        "200":
+          description: Saved parcel override
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegistryParcelOverride"
+        "400":
+          description: Invalid override data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
 
   /personas/{botId}/reply:
     post:
@@ -601,6 +678,82 @@ components:
         - addonIds
         - founderHandle
 
+    RegistrySectorOverride:
+      type: object
+      properties:
+        sectorId:
+          type: string
+        displayName:
+          type: string
+        notes:
+          type: ["string", "null"]
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - sectorId
+        - displayName
+        - updatedBy
+        - createdAt
+        - updatedAt
+
+    RegistryParcelOverride:
+      type: object
+      properties:
+        parcelId:
+          type: string
+        displayName:
+          type: string
+        notes:
+          type: ["string", "null"]
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - parcelId
+        - displayName
+        - updatedBy
+        - createdAt
+        - updatedAt
+
+    RegistryOverrides:
+      type: object
+      properties:
+        sectors:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegistrySectorOverride"
+        parcels:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegistryParcelOverride"
+      required:
+        - sectors
+        - parcels
+
+    UpsertRegistryBody:
+      type: object
+      properties:
+        displayName:
+          type: string
+        notes:
+          type: ["string", "null"]
+        founderHandle:
+          type: string
+      required:
+        - displayName
+        - founderHandle
+
     Mission:
       type: object
       properties:
@@ -622,6 +775,10 @@ components:
           type: integer
         locationName:
           type: string
+        sectorId:
+          type: ["string", "null"]
+        parcelId:
+          type: ["string", "null"]
         latitude:
           type: number
           description: Mars latitude (-90 to 90)
@@ -671,6 +828,10 @@ components:
           type: integer
         locationName:
           type: string
+        sectorId:
+          type: ["string", "null"]
+        parcelId:
+          type: ["string", "null"]
         latitude:
           type: number
         longitude:

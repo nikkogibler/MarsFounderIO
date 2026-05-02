@@ -79,12 +79,32 @@ interface Mission {
   targetMaterial: string | null;
   durationSols: number;
   locationName: string;
+  sectorId: string | null;
+  parcelId: string | null;
   latitude: number;
   longitude: number;
   status: MissionStatus;
   progressPercent: number;
   founderHandle: string;
   createdAt: string;
+}
+
+interface SectorRegistryOverride {
+  sectorId: string;
+  displayName: string;
+  notes: string | null;
+  updatedBy: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface ParcelRegistryOverride {
+  parcelId: string;
+  displayName: string;
+  notes: string | null;
+  updatedBy: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const BOTS: BotClass[] = [
@@ -233,6 +253,8 @@ const MARKETPLACE_SKILLS = [
 
 const builds: Build[] = [];
 const missions: Mission[] = [];
+const sectorRegistryOverrides: SectorRegistryOverride[] = [];
+const parcelRegistryOverrides: ParcelRegistryOverride[] = [];
 const waitlist = new Set<string>();
 
 export function marsfounderMockApiPlugin(): Plugin {
@@ -272,6 +294,12 @@ async function handleApi(req: IncomingMessage, res: ServerResponse, path: string
   if (method === "GET" && path === "/ambient/dust-storm") return sendJson(res, 200, getDustStorm());
   if (method === "GET" && path === "/marketplace/skills") return sendJson(res, 200, MARKETPLACE_SKILLS);
   if (method === "GET" && path === "/dashboard/summary") return sendJson(res, 200, getDashboardSummary());
+  if (method === "GET" && path === "/registry/overrides") {
+    return sendJson(res, 200, {
+      sectors: [...sectorRegistryOverrides].sort(byUpdatedDesc),
+      parcels: [...parcelRegistryOverrides].sort(byUpdatedDesc),
+    });
+  }
 
   const botMatch = path.match(/^\/bots\/([^/]+)$/);
   if (method === "GET" && botMatch) {
@@ -295,6 +323,20 @@ async function handleApi(req: IncomingMessage, res: ServerResponse, path: string
   if (method === "POST" && feasibilityMatch) {
     const mission = missions.find((item) => item.id === feasibilityMatch[1]);
     return mission ? sendJson(res, 200, getFeasibility(mission)) : sendJson(res, 404, { error: "mission not found" });
+  }
+
+  const sectorRegistryMatch = path.match(/^\/registry\/sectors\/([^/]+)$/);
+  if (method === "PUT" && sectorRegistryMatch) {
+    const body = await readJson(req);
+    const row = upsertSectorRegistryOverride(sectorRegistryMatch[1], body);
+    return "error" in row ? sendJson(res, 400, row) : sendJson(res, 200, row);
+  }
+
+  const parcelRegistryMatch = path.match(/^\/registry\/parcels\/([^/]+)$/);
+  if (method === "PUT" && parcelRegistryMatch) {
+    const body = await readJson(req);
+    const row = upsertParcelRegistryOverride(parcelRegistryMatch[1], body);
+    return "error" in row ? sendJson(res, 400, row) : sendJson(res, 200, row);
   }
 
   const personaMatch = path.match(/^\/personas\/([^/]+)\/reply$/);
@@ -411,6 +453,8 @@ function createMission(body: Record<string, unknown>): Mission | { error: string
     targetMaterial: typeof body.targetMaterial === "string" && body.targetMaterial ? body.targetMaterial : null,
     durationSols,
     locationName: String(body.locationName ?? "Valles Marineris"),
+    sectorId: typeof body.sectorId === "string" ? body.sectorId : null,
+    parcelId: typeof body.parcelId === "string" ? body.parcelId : null,
     latitude,
     longitude,
     founderHandle: String(body.founderHandle ?? build.founderHandle),
@@ -420,6 +464,80 @@ function createMission(body: Record<string, unknown>): Mission | { error: string
   };
   missions.unshift(mission);
   return mission;
+}
+
+function upsertSectorRegistryOverride(
+  sectorId: string,
+  body: Record<string, unknown>,
+): SectorRegistryOverride | { error: string } {
+  const displayName = String(body.displayName ?? "").trim();
+  const founderHandle = String(body.founderHandle ?? "").trim();
+  const notes = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
+
+  if (!displayName) return { error: "displayName is required" };
+  if (!founderHandle) return { error: "founderHandle is required" };
+  if (displayName.length > 80) return { error: "displayName exceeds 80 characters" };
+  if (founderHandle.length > 40) return { error: "founderHandle exceeds 40 characters" };
+  if (notes && notes.length > 500) return { error: "notes exceeds 500 characters" };
+
+  const now = new Date().toISOString();
+  const existing = sectorRegistryOverrides.find((override) => override.sectorId === sectorId);
+
+  if (existing) {
+    existing.displayName = displayName;
+    existing.notes = notes;
+    existing.updatedBy = founderHandle;
+    existing.updatedAt = now;
+    return existing;
+  }
+
+  const row: SectorRegistryOverride = {
+    sectorId,
+    displayName,
+    notes,
+    updatedBy: founderHandle,
+    createdAt: now,
+    updatedAt: now,
+  };
+  sectorRegistryOverrides.unshift(row);
+  return row;
+}
+
+function upsertParcelRegistryOverride(
+  parcelId: string,
+  body: Record<string, unknown>,
+): ParcelRegistryOverride | { error: string } {
+  const displayName = String(body.displayName ?? "").trim();
+  const founderHandle = String(body.founderHandle ?? "").trim();
+  const notes = typeof body.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
+
+  if (!displayName) return { error: "displayName is required" };
+  if (!founderHandle) return { error: "founderHandle is required" };
+  if (displayName.length > 80) return { error: "displayName exceeds 80 characters" };
+  if (founderHandle.length > 40) return { error: "founderHandle exceeds 40 characters" };
+  if (notes && notes.length > 500) return { error: "notes exceeds 500 characters" };
+
+  const now = new Date().toISOString();
+  const existing = parcelRegistryOverrides.find((override) => override.parcelId === parcelId);
+
+  if (existing) {
+    existing.displayName = displayName;
+    existing.notes = notes;
+    existing.updatedBy = founderHandle;
+    existing.updatedAt = now;
+    return existing;
+  }
+
+  const row: ParcelRegistryOverride = {
+    parcelId,
+    displayName,
+    notes,
+    updatedBy: founderHandle,
+    createdAt: now,
+    updatedAt: now,
+  };
+  parcelRegistryOverrides.unshift(row);
+  return row;
 }
 
 function toMissionListItem(mission: Mission): Mission {
@@ -636,6 +754,10 @@ function getDustStorm(now = new Date()) {
 
 function byCreatedDesc<T extends { createdAt: string }>(a: T, b: T): number {
   return b.createdAt.localeCompare(a.createdAt);
+}
+
+function byUpdatedDesc<T extends { updatedAt: string }>(a: T, b: T): number {
+  return b.updatedAt.localeCompare(a.updatedAt);
 }
 
 async function readJson(req: IncomingMessage): Promise<Record<string, unknown>> {
