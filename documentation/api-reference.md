@@ -1,7 +1,10 @@
 # API Reference
 
-Base URL (production): `http://145.14.157.203:3000/api`  
+Browser-facing base URL (production app): `https://marsfounder-io.vercel.app/api`  
+Direct VPS API base URL: `http://145.14.157.203:3000/api`  
 Base URL (local dev): `http://localhost:3000/api`
+
+For browser traffic in production, prefer the Vercel `/api/*` path so requests stay on HTTPS and avoid mixed-content blocking.
 
 All responses are JSON. All write endpoints accept `Content-Type: application/json`.
 

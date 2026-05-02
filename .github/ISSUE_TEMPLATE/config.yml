@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Local development guide
+    url: https://github.com/nikkogibler/MarsFounderIO/blob/main/documentation/local-development.md
+    about: Check setup, workspace commands, and local run instructions before opening a DX issue.
+  - name: Live product
+    url: https://marsfounder-io.vercel.app
+    about: Verify production behavior before reporting a frontend bug.

@@ -1,0 +1,59 @@
+name: Feature request
+description: Propose a product, DX, API, or documentation improvement.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing an improvement. Strong requests explain the problem first, then the solution.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Frontend UX
+        - API or backend
+        - Mission logic or data model
+        - Documentation
+        - Developer experience
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      placeholder: It is currently hard to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      placeholder: We could add...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Optional, but useful if you explored other approaches.
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and impact
+      description: Explain which users, routes, or packages this would affect.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: I explained the problem, not just the desired feature.
+          required: true

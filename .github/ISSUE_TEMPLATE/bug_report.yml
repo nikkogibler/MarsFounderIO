@@ -1,0 +1,74 @@
+name: Bug report
+description: Report a reproducible problem in the app, API, docs, or developer workflow.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please make the issue reproducible and specific so it can be acted on quickly.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Where is the bug?
+      options:
+        - Frontend app
+        - API server
+        - Database or seed data
+        - Documentation
+        - Local development or deployment
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the bug clearly.
+      placeholder: When I open the Missions tab, the page stays blank and the console shows...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the minimal steps needed to reproduce the bug.
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include browser, OS, commit SHA, or deployment URL if relevant.
+      placeholder: macOS + Chrome 136, production at marsfounder-io.vercel.app
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs, screenshots, or console output
+      description: Paste anything that makes debugging easier.
+      render: shell
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-flight checks
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: I included enough detail to reproduce the problem.
+          required: true
