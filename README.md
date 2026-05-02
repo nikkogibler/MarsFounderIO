@@ -47,12 +47,16 @@ The core philosophy, drawn from the **"Robotic Mars Pre-Deployment Program Proje
 ## Product Preview
 
 <p align="center">
-   <img src=".github/assets/social-preview-github.png" alt="MarsFounder home page hero" width="100%" />
+   <img src=".github/assets/marsfounder_social_preview.png" alt="MarsFounder home page hero" width="100%" />
 </p>
 
 <p align="center">
-   <img src=".github/assets/readme-fleet.png" alt="MarsFounder fleet roster" width="49%" />
-   <img src=".github/assets/readme-telemetry.png" alt="MarsFounder telemetry dashboard" width="49%" />
+   <img src=".github/assets/marsfounder_fleet_explorer.png" alt="MarsFounder fleet roster" width="49%" />
+   <img src=".github/assets/marsfounder_telemetry.png" alt="MarsFounder telemetry dashboard" width="49%" />
+</p>
+
+<p align="center">
+   <img src=".github/assets/marsfounder_skill_mktplace.png" alt="MarsFounder skill marketplace" width="100%" />
 </p>
 
 ---
