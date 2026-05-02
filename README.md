@@ -36,6 +36,7 @@ The core philosophy, drawn from the **"Robotic Mars Pre-Deployment Program Proje
 
 - **Mission Builder** — configure objectives, location, duration, and bot loadout before committing an asset to the surface
 - **Robotic Fleet Management** — browse bot classes by role, spec, and hourly credit burn; build custom loadouts with tools and add-ons
+- **Autonomous Deployment Framework** — long-form strategy document rendered directly from the repo markdown source at `/adf`
 - **AI Personas** — each bot class has a named AI persona; chat with your fleet commander before a mission
 - **Mission Feasibility Analysis** — AI-powered analysis flags risks before you deploy
 - **Skill Marketplace** — modular software payloads for robotic hardware

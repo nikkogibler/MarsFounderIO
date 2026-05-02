@@ -49,6 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/configure" className={`hover:text-primary transition-colors ${isActive('/configure') ? 'text-primary' : 'text-muted-foreground'}`}>Config</Link>
             <Link href="/missions" className={`hover:text-primary transition-colors ${isActive('/missions') || location.startsWith('/missions/') ? 'text-primary' : 'text-muted-foreground'}`}>Missions</Link>
             <Link href="/dashboard" className={`hover:text-primary transition-colors ${isActive('/dashboard') ? 'text-primary' : 'text-muted-foreground'}`}>Telemetry</Link>
+            <Link href="/adf" className={`hover:text-primary transition-colors ${isActive('/adf') ? 'text-primary' : 'text-muted-foreground'}`}>ADF</Link>
             <Link href="/marketplace" className={`hover:text-primary transition-colors ${isActive('/marketplace') ? 'text-primary' : 'text-muted-foreground'}`}>Skills</Link>
             <Link href="/roadmap" className={`hover:text-primary transition-colors ${isActive('/roadmap') ? 'text-primary' : 'text-muted-foreground'}`}>Roadmap</Link>
           </nav>

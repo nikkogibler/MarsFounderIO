@@ -41,6 +41,8 @@ PORT=5173 BASE_PATH=/ pnpm run dev
 
 The SPA starts at `http://localhost:5173`. Vite proxies `/api/*` requests to `localhost:3000` automatically — no `VITE_API_URL` needed locally.
 
+The `/adf` route renders [documentation/Robotic Mars Pre-Deployment Program Projection.md](/Users/nicholasgibler/Documents/Various Projects/MarsFounderIO/documentation/Robotic%20Mars%20Pre-Deployment%20Program%20Projection.md) directly, so edits to that markdown file update the in-app document view.
+
 ## Running Both (summary)
 
 **Terminal 1 — API:**

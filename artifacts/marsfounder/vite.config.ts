@@ -61,6 +61,7 @@ export default defineConfig(async ({ mode }) => {
       allowedHosts: true,
       fs: {
         strict: true,
+        allow: [path.resolve(import.meta.dirname, "..", "..")],
       },
       proxy: {
         "/api": {

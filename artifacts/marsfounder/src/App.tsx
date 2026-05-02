@@ -13,6 +13,7 @@ import MissionsList from "@/pages/missions/index";
 import MissionNew from "@/pages/missions/new";
 import MissionDetail from "@/pages/missions/[missionId]";
 import Marketplace from "@/pages/marketplace";
+import Adf from "@/pages/adf";
 import Dashboard from "@/pages/dashboard";
 import Waitlist from "@/pages/waitlist";
 import Roadmap from "@/pages/roadmap";
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/configure" component={Configure} />
       <Route path="/missions" component={MissionsList} />
       <Route path="/missions/new" component={MissionNew} />
+      <Route path="/adf" component={Adf} />
       <Route path="/missions/:missionId" component={MissionDetail} />
       <Route path="/marketplace" component={Marketplace} />
       <Route path="/dashboard" component={Dashboard} />
