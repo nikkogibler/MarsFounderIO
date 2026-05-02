@@ -38,11 +38,11 @@ This is a monorepo organized for high scalability and shared logic:
 ---
 
 ## Technical Stack
-* **Frontend:** React 18, Vite, Tailwind CSS, Shadcn UI, Framer Motion (for high-fidelity dashboard animations).
-* **Backend:** Node.js, Express, TypeScript.
-* **Database:** Drizzle ORM (PostgreSQL ready) handling mission states and entity relationships.
-* **AI/LLM:** Anthropic Claude integration for agent logic and persona-based mission reporting.
-* **Package Management:** `pnpm` workspaces for efficient monorepo handling.
+* **Frontend:** React 18, Vite, Tailwind CSS, Shadcn UI, Framer Motion — deployed on **Vercel**
+* **Backend:** Node.js, Express 5, TypeScript — deployed on **Hostinger VPS** via Docker
+* **Database:** Drizzle ORM + **Neon serverless PostgreSQL**
+* **AI/LLM:** OpenRouter (`deepseek/deepseek-v4-flash`) for persona replies and mission feasibility analysis
+* **Package Management:** `pnpm` workspaces for efficient monorepo handling
 
 ---
 
@@ -57,21 +57,87 @@ This is a monorepo organized for high scalability and shared logic:
 ## Getting Started
 
 ### Prerequisites
-* Node.js (v18+)
+* Node.js v22+
 * pnpm (`npm install -g pnpm`)
 
 ### Installation
-1.  Clone the repository.
-2.  Install dependencies:
-    ```bash
-    pnpm install
-    ```
-3.  Set up your environment variables (AI API keys, Database URLs) in the respective `artifacts/` directories.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+3. Create a `.env` file at the repo root with:
+   ```
+   DATABASE_URL=<your Neon connection string>
+   OPENROUTER_API_KEY=<your OpenRouter key>
+   ```
+4. Push the database schema:
+   ```bash
+   export $(grep -v '^#' .env | xargs) && pnpm --filter @workspace/db run push
+   ```
 
-### Running the Platform
-To start the entire ecosystem (API + Frontend):
+### Running locally
+**API server** (terminal 1):
 ```bash
-pnpm dev
+export $(grep -v '^#' .env | xargs) && PORT=3000 pnpm --filter @workspace/api-server run dev
 ```
+
+**Frontend** (terminal 2):
+```bash
+cd artifacts/marsfounder && PORT=5173 BASE_PATH=/ pnpm run dev
+```
+
+Frontend runs at `http://localhost:5173`. The Vite proxy forwards `/api/*` calls to `localhost:3000`.
+
+---
+
+## Deployment
+
+### Architecture
+```
+Browser → Vercel (static frontend) → Hostinger VPS (Express API, Docker) → Neon (PostgreSQL)
+```
+
+### Frontend — Vercel
+- Build command (auto-detected from `vercel.json`): `pnpm --filter @workspace/marsfounder run build`
+- Output: `artifacts/marsfounder/dist/public`
+- Required env var in Vercel dashboard:
+  - `VITE_API_URL` → your VPS public URL (e.g. `http://<vps-ip>:3000`)
+
+### API Server — Hostinger VPS (Docker)
+The repo includes a `Dockerfile` at the root. To deploy or redeploy on the VPS:
+
+```bash
+# First time
+git clone https://github.com/nikkogibler/MarsFounderIO.git /opt/marsfounder
+cd /opt/marsfounder
+docker build -t marsfounder-api .
+docker run -d \
+  --name marsfounder-api \
+  --restart unless-stopped \
+  -p 3000:3000 \
+  -e PORT=3000 \
+  -e NODE_ENV=production \
+  -e DATABASE_URL="<your Neon connection string>" \
+  -e OPENROUTER_API_KEY="<your OpenRouter key>" \
+  -e CORS_ORIGIN="https://marsfounder.io,https://www.marsfounder.io" \
+  marsfounder-api
+
+# To redeploy after a git push
+cd /opt/marsfounder
+git pull
+docker build -t marsfounder-api .
+docker stop marsfounder-api && docker rm marsfounder-api
+docker run -d ... (same run command as above)
+```
+
+Verify the API is healthy:
+```bash
+curl http://localhost:3000/api/healthz
+# → {"status":"ok"}
+```
+
+### CORS
+The API reads `CORS_ORIGIN` (comma-separated list of allowed origins). Set this to your Vercel domain(s). If unset, all origins are allowed (dev-only default).
 
 ---
