@@ -4,6 +4,7 @@
   "installCommand": "pnpm install",
   "framework": null,
   "rewrites": [
+    { "source": "/api/:path*", "destination": "http://145.14.157.203:3000/api/:path*" },
     { "source": "/((?!assets/).*)", "destination": "/index.html" }
   ]
 }
