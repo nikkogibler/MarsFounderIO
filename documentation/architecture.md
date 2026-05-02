@@ -53,7 +53,7 @@ Browser → Vercel (SPA) → VPS Docker container (Express API) → Neon Postgre
 - **Framework**: Express 5, TypeScript
 - **Build**: esbuild → single CJS bundle at `dist/index.mjs`
 - **Database access**: Drizzle ORM via `@workspace/db`
-- **AI**: `@workspace/integrations-anthropic-ai` (OpenRouter via `openai` SDK, model `deepseek/deepseek-v4-flash`)
+- **AI**: `@workspace/integrations-anthropic-ai` (OpenRouter via `openai` SDK, model `x-ai/grok-4.3`)
 - **Rate limiting**: 
   - AI routes (`/api/personas/*`, `/api/missions/:id/feasibility`): 15 req/min
   - Write routes (`POST /api/builds`, `POST /api/missions`): 30 req/min
@@ -82,7 +82,7 @@ File: `lib/integrations-anthropic-ai/src/client.ts`
 
 Uses the `openai` SDK pointed at OpenRouter:
 - `baseURL`: `https://openrouter.ai/api/v1`
-- Model: `deepseek/deepseek-v4-flash`
+- Model: `x-ai/grok-4.3`
 - Headers: `HTTP-Referer`, `X-Title`
 - Env var: `OPENROUTER_API_KEY`
 
