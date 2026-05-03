@@ -65,7 +65,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-bold tracking-widest uppercase">
+          <nav className="hidden lg:flex items-center gap-8 text-sm font-bold tracking-widest uppercase">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
@@ -98,7 +98,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {/* Hamburger button — visible only on mobile */}
             <button
               type="button"
-              className="md:hidden flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5 border border-border bg-card/50 transition-colors hover:border-primary"
+              className="lg:hidden flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5 border border-border bg-card/50 transition-colors hover:border-primary"
               onClick={() => setMobileNavOpen((v) => !v)}
               aria-label={mobileNavOpen ? "Close navigation" : "Open navigation"}
               aria-expanded={mobileNavOpen}
@@ -125,7 +125,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Mobile nav overlay */}
       {mobileNavOpen && (
         <div
-          className="md:hidden fixed inset-0 z-40 bg-background/60 backdrop-blur-sm"
+          className="lg:hidden fixed inset-0 z-40 bg-background/60 backdrop-blur-sm"
           onClick={() => setMobileNavOpen(false)}
           aria-hidden="true"
         />
@@ -133,7 +133,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile nav drawer */}
       <div
-        className={`md:hidden fixed top-0 right-0 z-50 h-full w-72 max-w-[85vw] bg-background border-l border-border flex flex-col transition-transform duration-300 ${mobileNavOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`lg:hidden fixed top-0 right-0 z-50 h-full w-72 max-w-[85vw] bg-background border-l border-border flex flex-col transition-transform duration-300 ${mobileNavOpen ? 'translate-x-0' : 'translate-x-full'}`}
         aria-hidden={!mobileNavOpen}
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
