@@ -49,16 +49,16 @@ const outline = getOutline(adfMarkdown);
 
 export default function Adf() {
   return (
-    <div className="container mx-auto px-6 py-12 max-w-7xl flex flex-col gap-10">
+    <div className="container mx-auto flex max-w-7xl flex-col gap-10 px-4 py-12 sm:px-6">
       <div className="border-b border-border pb-8 flex flex-col gap-4">
-        <span className="font-mono text-xs uppercase tracking-[0.35em] text-primary">
+        <span className="wrap-break-word font-mono text-[11px] uppercase tracking-[0.24em] text-primary sm:text-xs sm:tracking-[0.35em]">
           Autonomous Deployment Framework
         </span>
       </div>
 
       <div className="grid gap-8 xl:grid-cols-[260px_minmax(0,1fr)] items-start">
-        <aside className="xl:sticky xl:top-24 flex flex-col gap-4">
-          <div className="border border-border bg-card/40 p-4 flex flex-col gap-4">
+        <aside className="flex min-w-0 flex-col gap-4 xl:sticky xl:top-24">
+          <div className="flex min-w-0 flex-col gap-4 border border-border bg-card/40 p-4">
             <div>
               <h2 className="text-sm font-black uppercase tracking-widest text-foreground">ADF Index</h2>
             </div>
@@ -68,7 +68,7 @@ export default function Adf() {
                 <a
                   key={section.id}
                   href={`#${section.id}`}
-                  className="font-mono text-xs uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
+                  className="wrap-break-word font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
                 >
                   {section.title}
                 </a>
@@ -77,7 +77,7 @@ export default function Adf() {
           </div>
         </aside>
 
-        <article className="border border-border bg-card/30 px-6 py-8 md:px-8 md:py-10">
+        <article className="min-w-0 overflow-hidden border border-border bg-card/30 px-4 py-8 sm:px-6 md:px-8 md:py-10">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
@@ -86,7 +86,7 @@ export default function Adf() {
                 return (
                   <h1
                     id={slugify(title)}
-                    className="mt-0 mb-5 text-4xl md:text-6xl font-black uppercase tracking-tighter text-foreground"
+                    className="mt-0 mb-5 wrap-break-word text-3xl font-black uppercase tracking-tighter text-foreground sm:text-4xl md:text-6xl"
                   >
                     {children}
                   </h1>
@@ -97,7 +97,7 @@ export default function Adf() {
                 return (
                   <h2
                     id={slugify(title)}
-                    className="mt-12 mb-5 border-t border-border pt-8 text-2xl md:text-3xl font-black uppercase tracking-tight text-foreground"
+                    className="mt-12 mb-5 wrap-break-word border-t border-border pt-8 text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl"
                   >
                     {children}
                   </h2>
@@ -108,7 +108,7 @@ export default function Adf() {
                 return (
                   <h3
                     id={slugify(title)}
-                    className="mt-8 mb-4 text-xl md:text-2xl font-black uppercase tracking-tight text-foreground"
+                    className="mt-8 mb-4 wrap-break-word text-xl font-black uppercase tracking-tight text-foreground md:text-2xl"
                   >
                     {children}
                   </h3>
@@ -119,21 +119,21 @@ export default function Adf() {
                 return (
                   <h4
                     id={slugify(title)}
-                    className="mt-10 mb-4 text-lg font-black uppercase tracking-widest text-primary"
+                    className="mt-10 mb-4 wrap-break-word text-lg font-black uppercase tracking-widest text-primary"
                   >
                     {children}
                   </h4>
                 );
               },
               p: ({ children }) => (
-                <p className="my-4 font-mono text-sm leading-7 text-muted-foreground">{children}</p>
+                <p className="my-4 wrap-break-word font-mono text-sm leading-7 text-muted-foreground">{children}</p>
               ),
               ul: ({ children }) => (
                 <ul className="my-5 flex flex-col gap-3 border-l border-primary/30 pl-5">{children}</ul>
               ),
               ol: ({ children }) => <ol className="my-5 list-decimal pl-6 space-y-3">{children}</ol>,
               li: ({ children }) => (
-                <li className="font-mono text-sm leading-7 text-muted-foreground">{children}</li>
+                <li className="wrap-break-word font-mono text-sm leading-7 text-muted-foreground">{children}</li>
               ),
               strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
               em: ({ children }) => <em className="italic text-foreground/90">{children}</em>,
@@ -161,7 +161,7 @@ export default function Adf() {
                 </th>
               ),
               td: ({ children }) => (
-                <td className="border border-border px-3 py-2 align-top font-mono text-xs leading-6 text-muted-foreground">
+                <td className="wrap-break-word border border-border px-3 py-2 align-top font-mono text-xs leading-6 text-muted-foreground">
                   {children}
                 </td>
               ),
@@ -175,20 +175,20 @@ export default function Adf() {
         </article>
       </div>
 
-      <div className="pt-8 border-t border-border flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+      <div className="flex flex-col gap-4 border-t border-border pt-8 md:flex-row md:items-center md:justify-between">
+        <p className="wrap-break-word font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Source: {SOURCE_LABEL}
         </p>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
           <Link
             href="/missions/new"
-            className="text-primary hover:text-accent font-mono text-sm tracking-widest underline decoration-primary/30 underline-offset-4 uppercase"
+            className="font-mono text-sm uppercase tracking-widest text-primary underline decoration-primary/30 underline-offset-4 hover:text-accent"
           >
             Create A Mission
           </Link>
           <Link
             href="/roadmap"
-            className="text-muted-foreground hover:text-primary font-mono text-sm tracking-widest underline decoration-border underline-offset-4 uppercase"
+            className="font-mono text-sm uppercase tracking-widest text-muted-foreground underline decoration-border underline-offset-4 hover:text-primary"
           >
             Back To Roadmap
           </Link>

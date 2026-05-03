@@ -128,7 +128,7 @@ export default function MissionDetail() {
 
       <div className="flex flex-col lg:flex-row flex-1 min-h-[500px]">
         {/* Left: Telemetry Log */}
-        <div className="lg:w-2/3 border-r border-border flex flex-col bg-card/10">
+        <div className="lg:w-2/3 border-b lg:border-b-0 lg:border-r border-border flex flex-col bg-card/10 min-h-[400px]">
           {mission.missionBrief && (
             <div className="border-b border-border bg-background/70 p-6">
               <div className="font-mono text-[10px] text-muted-foreground tracking-widest mb-3">
