@@ -92,7 +92,7 @@ export default function Home() {
   return (
     <div ref={containerRef} className="w-full flex flex-col">
       {/* Hero Section */}
-      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden border-b border-border">
+      <section className="relative min-h-[90svh] sm:h-[90vh] flex items-start sm:items-center justify-center overflow-hidden border-b border-border">
         <div className="absolute inset-0 z-0 opacity-40 mix-blend-screen pointer-events-none">
           {webglOk ? (
             <CanvasErrorBoundary
@@ -114,8 +114,8 @@ export default function Home() {
         
         <div className="absolute inset-0 z-0 bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat mix-blend-overlay opacity-30" />
         
-        <div className="relative z-10 container mx-auto px-6 flex flex-col items-center text-center hero-text">
-          <div className="inline-block border border-primary text-primary px-3 py-1 text-xs font-mono mb-8 tracking-widest bg-primary/10">
+        <div className="relative z-10 container mx-auto flex flex-col items-center px-6 pt-12 sm:pt-0 text-center hero-text">
+          <div className="mb-6 inline-block border border-primary bg-primary/10 px-3 py-1 text-xs font-mono tracking-widest text-primary sm:mb-8">
             SYSTEM INITIALIZED • CONNECTION ESTABLISHED
           </div>
           <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
