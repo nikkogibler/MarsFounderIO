@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
+import { ChevronDown } from "lucide-react";
 import * as THREE from "three";
 import { useListBots } from "@workspace/api-client-react";
 import { CanvasErrorBoundary } from "@/components/canvas-error-boundary";
@@ -50,8 +51,14 @@ function detectWebGL(): boolean {
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const valuePropRef = useRef<HTMLElement>(null);
   const { data: bots, isLoading: loadingBots } = useListBots();
   const [webglOk, setWebglOk] = useState(false);
+
+  const scrollToValueProps = () => {
+    valuePropRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   useEffect(() => {
     setWebglOk(detectWebGL());
   }, []);
@@ -132,6 +139,16 @@ export default function Home() {
               Join Waitlist
             </Link>
           </div>
+          <button
+            type="button"
+            onClick={scrollToValueProps}
+            className="mt-8 flex items-center justify-center text-primary transition-colors duration-300 hover:text-accent sm:hidden"
+            aria-label="Scroll to next section"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/35 bg-primary/5 animate-pulse">
+              <ChevronDown className="h-5 w-5" />
+            </span>
+          </button>
         </div>
         
         {/* Decorative elements */}
@@ -142,7 +159,7 @@ export default function Home() {
       </section>
 
       {/* Value Prop */}
-      <section className="py-32 border-b border-border bg-card/30 reveal-section relative">
+      <section ref={valuePropRef} className="py-32 border-b border-border bg-card/30 reveal-section relative">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="reveal-item flex flex-col gap-4 border-l border-primary/30 pl-6 relative">
