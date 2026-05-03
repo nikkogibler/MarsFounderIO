@@ -56,10 +56,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-md border-b border-border/50 flex flex-col">
-        <div className="flex items-center justify-between px-4 sm:px-6 py-4">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-4 h-4 bg-primary rounded-none group-hover:bg-accent transition-colors duration-300" />
-            <span className="font-sans font-black text-xl tracking-tighter uppercase text-foreground">
+        <div className="flex items-center justify-between gap-3 px-4 py-4 sm:px-6">
+          <Link href="/" className="group flex min-w-0 items-center gap-2.5 sm:gap-3">
+            <div className="h-4 w-4 shrink-0 bg-primary rounded-none transition-colors duration-300 group-hover:bg-accent" />
+            <span className="truncate font-sans text-lg font-black tracking-tighter uppercase text-foreground sm:text-xl">
               Mars<span className="text-primary">Founder</span>
             </span>
           </Link>
@@ -81,7 +81,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-3">
             {/* Status bar — hidden on small screens */}
             <div className="hidden sm:flex items-center gap-6 font-mono text-xs text-muted-foreground bg-card/50 border border-border px-3 py-1.5">
               <div className="flex items-center gap-2">
@@ -95,15 +95,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
             </div>
 
-            {/* Compact status for xs screens */}
-            <div className="flex sm:hidden items-center gap-1.5 font-mono text-[10px] text-muted-foreground bg-card/50 border border-border px-2 py-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-              <span>{marsTime?.mtc || "00:00:00"}</span>
-            </div>
-
             {/* Hamburger button — visible only on mobile */}
             <button
-              className="md:hidden flex flex-col justify-center items-center gap-1.5 w-10 h-10 border border-border bg-card/50 hover:border-primary transition-colors"
+              type="button"
+              className="md:hidden flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-1.5 border border-border bg-card/50 transition-colors hover:border-primary"
               onClick={() => setMobileNavOpen((v) => !v)}
               aria-label={mobileNavOpen ? "Close navigation" : "Open navigation"}
               aria-expanded={mobileNavOpen}
