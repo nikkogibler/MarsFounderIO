@@ -121,16 +121,18 @@ export default function Home() {
         
         <div className="absolute inset-0 z-0 bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat mix-blend-overlay opacity-30" />
         
-        <div className="relative z-10 container mx-auto flex flex-col items-center px-6 pt-12 sm:pt-0 text-center hero-text">
-          <div className="mb-6 inline-block border border-primary bg-primary/10 px-3 py-1 text-xs font-mono tracking-widest text-primary sm:mb-8">
-            SYSTEM INITIALIZED • CONNECTION ESTABLISHED
+        <div className="relative z-10 container mx-auto flex min-h-[90svh] flex-col items-center px-6 text-center hero-text sm:min-h-0">
+          <div className="flex flex-1 flex-col items-center justify-center pt-8 sm:pt-0">
+            <div className="mb-6 inline-block border border-primary bg-primary/10 px-3 py-1 text-xs font-mono tracking-widest text-primary sm:mb-8">
+              SYSTEM INITIALIZED • CONNECTION ESTABLISHED
+            </div>
+            <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
+              Robotic Labor<br/>For Mars
+            </h1>
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-mono max-w-3xl px-2 sm:px-0">
+              MarsFounder operates surface-ready robotic assets for construction, survey, extraction, repair, and communications missions.
+            </p>
           </div>
-          <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
-            Robotic Labor<br/>For Mars
-          </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-mono max-w-3xl mb-10 sm:mb-12 px-2 sm:px-0">
-            MarsFounder operates surface-ready robotic assets for construction, survey, extraction, repair, and communications missions.
-          </p>
           <div className="flex flex-wrap gap-4 justify-center px-4 sm:px-0">
             <Link href="/bots" className="bg-primary hover:bg-accent hover:text-primary-foreground text-primary-foreground px-6 sm:px-8 py-4 font-bold font-mono uppercase tracking-widest transition-all duration-300 border border-primary hover:border-accent shadow-[0_0_20px_rgba(204,68,34,0.3)] min-h-[44px]">
               View Fleet
@@ -142,7 +144,7 @@ export default function Home() {
           <button
             type="button"
             onClick={scrollToValueProps}
-            className="mt-12 flex items-center justify-center text-primary transition-colors duration-300 hover:text-accent sm:hidden"
+            className="mt-12 mb-8 flex items-center justify-center text-primary transition-colors duration-300 hover:text-accent sm:hidden"
             aria-label="Scroll to next section"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/35 bg-primary/5 animate-pulse">
