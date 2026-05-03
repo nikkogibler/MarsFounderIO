@@ -123,7 +123,7 @@ export default function Home() {
         
         <div className="relative z-10 container mx-auto flex min-h-[90svh] flex-col items-center px-6 text-center hero-text sm:min-h-0">
           <div className="flex flex-1 flex-col items-center justify-center pt-8 sm:pt-0">
-            <div className="mb-6 inline-block -translate-y-8 border border-primary bg-primary/10 px-3 py-1 text-xs font-mono tracking-widest text-primary sm:mb-8 sm:translate-y-0">
+            <div className="mb-6 inline-block -translate-y-12 border border-primary bg-primary/10 px-3 py-1 text-xs font-mono tracking-widest text-primary sm:mb-8 sm:translate-y-0">
               SYSTEM INITIALIZED • CONNECTION ESTABLISHED
             </div>
             <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
@@ -133,7 +133,7 @@ export default function Home() {
               MarsFounder operates surface-ready robotic assets for construction, survey, extraction, repair, and communications missions.
             </p>
           </div>
-          <div className="-mt-6 flex flex-wrap justify-center gap-4 px-4 sm:mt-0 sm:px-0">
+          <div className="-mt-10 flex flex-wrap justify-center gap-4 px-4 sm:mt-0 sm:px-0">
             <Link href="/bots" className="bg-primary hover:bg-accent hover:text-primary-foreground text-primary-foreground px-6 sm:px-8 py-4 font-bold font-mono uppercase tracking-widest transition-all duration-300 border border-primary hover:border-accent shadow-[0_0_20px_rgba(204,68,34,0.3)] min-h-[44px]">
               View Fleet
             </Link>
@@ -144,7 +144,7 @@ export default function Home() {
           <button
             type="button"
             onClick={scrollToValueProps}
-            className="mt-8 mb-8 flex items-center justify-center text-primary transition-colors duration-300 hover:text-accent sm:hidden"
+            className="mt-6 mb-8 flex items-center justify-center text-primary transition-colors duration-300 hover:text-accent sm:hidden"
             aria-label="Scroll to next section"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/35 bg-primary/5 animate-pulse">
