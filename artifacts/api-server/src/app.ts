@@ -4,16 +4,25 @@ import pinoHttp from "pino-http";
 import { rateLimit } from "express-rate-limit";
 import router from "./routes";
 import { logger } from "./lib/logger";
+import { blockUnsafePromptFields } from "./lib/aiGuardrails";
 
 const app: Express = express();
 app.set("trust proxy", 1);
 
 const aiLimiter = rateLimit({
   windowMs: 60_000,
-  limit: 15,
+  limit: 8,
   standardHeaders: "draft-7",
   legacyHeaders: false,
   message: { error: "Rate limit exceeded. Slow down, founder." },
+});
+
+const feasibilityLimiter = rateLimit({
+  windowMs: 60_000,
+  limit: 4,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: { error: "Feasibility rate limit exceeded. Slow down, founder." },
 });
 
 const writeLimiter = rateLimit({
@@ -62,11 +71,15 @@ app.use(
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
-app.use("/api/personas", aiLimiter);
-app.use("/api/missions/:missionId/feasibility", aiLimiter);
+app.use("/api/personas", aiLimiter, blockUnsafePromptFields(["message"]));
+app.use("/api/missions/:missionId/feasibility", feasibilityLimiter);
 app.use("/api/waitlist", waitlistLimiter);
 app.post("/api/builds", writeLimiter);
-app.post("/api/missions", writeLimiter);
+app.post(
+  "/api/missions",
+  writeLimiter,
+  blockUnsafePromptFields(["missionBrief", "name", "locationName", "targetMaterial", "founderHandle"]),
+);
 
 app.use("/api", router);
 
