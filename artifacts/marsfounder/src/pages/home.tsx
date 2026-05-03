@@ -129,7 +129,7 @@ export default function Home() {
             <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-mono max-w-3xl px-2 sm:px-0">
               MarsFounder operates surface-ready robotic assets for construction, survey, extraction, repair, and communications missions.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4 px-4 sm:mt-10 sm:px-0">
+            <div className="mt-10 flex flex-wrap justify-center gap-4 px-4 sm:mt-10 sm:px-0">
             <Link href="/bots" className="bg-primary hover:bg-accent hover:text-primary-foreground text-primary-foreground px-6 sm:px-8 py-4 font-bold font-mono uppercase tracking-widest transition-all duration-300 border border-primary hover:border-accent shadow-[0_0_20px_rgba(204,68,34,0.3)] min-h-[44px]">
               View Fleet
             </Link>
