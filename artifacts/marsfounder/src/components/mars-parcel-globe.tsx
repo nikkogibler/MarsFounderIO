@@ -1,8 +1,17 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, ThreeEvent, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars, useGLTF } from "@react-three/drei";
+import { Maximize2 } from "lucide-react";
 import * as THREE from "three";
 import { CanvasErrorBoundary } from "@/components/canvas-error-boundary";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { generateMarsParcels, type MarsParcel, type MarsParcelStatus } from "@/lib/mars-registry";
 
 type MarsParcelGlobeProps = {
@@ -223,6 +232,60 @@ function GlobeScene({
   );
 }
 
+    function GlobeViewport({
+      webglOk,
+      parcels,
+      latitude,
+      longitude,
+      selectedParcelId,
+      interactive,
+      onSelectParcel,
+      onHoverParcel,
+      heightClass,
+    }: {
+      webglOk: boolean;
+      parcels: MarsParcel[];
+      latitude: number;
+      longitude: number;
+      selectedParcelId?: string;
+      interactive: boolean;
+      onSelectParcel?: (parcel: MarsParcel) => void;
+      onHoverParcel: (parcel?: MarsParcel) => void;
+      heightClass: string;
+    }) {
+      return (
+        <div className={`relative overflow-hidden bg-background ${heightClass}`}>
+          {webglOk ? (
+            <CanvasErrorBoundary fallback={<GlobeFallback />}>
+              <Suspense fallback={<GlobeFallback />}>
+                <Canvas
+                  camera={{ position: [0, 0, 3.15], fov: 42 }}
+                  dpr={[1, 1.5]}
+                  gl={{ antialias: true, powerPreference: "high-performance" }}
+                >
+                  <GlobeScene
+                    parcels={parcels}
+                    latitude={latitude}
+                    longitude={longitude}
+                    selectedParcelId={selectedParcelId}
+                    interactive={interactive}
+                    onSelectParcel={onSelectParcel}
+                    onHoverParcel={onHoverParcel}
+                  />
+                </Canvas>
+              </Suspense>
+            </CanvasErrorBoundary>
+          ) : (
+            <GlobeFallback />
+          )}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-background to-transparent" />
+          <div className="pointer-events-none absolute left-4 top-4 font-mono text-[10px] tracking-widest text-muted-foreground">
+            LAT {latitude.toFixed(2)} / LON {longitude.toFixed(2)}
+          </div>
+        </div>
+      );
+    }
+
 function GlobeFallback() {
   return (
     <div className="h-full min-h-96 w-full bg-[radial-gradient(circle_at_50%_45%,rgba(204,68,34,0.3),rgba(0,0,0,0)_55%)] flex items-center justify-center border border-border">
@@ -278,6 +341,7 @@ export function MarsParcelGlobe({
   interactive = true,
   className = "",
 }: MarsParcelGlobeProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const [webglOk, setWebglOk] = useState(false);
   const [hoveredParcel, setHoveredParcel] = useState<MarsParcel>();
   const parcels = useMemo(() => parcelsProp ?? generateMarsParcels(), [parcelsProp]);
@@ -290,53 +354,101 @@ export function MarsParcelGlobe({
     [parcels, selectedParcelId],
   );
   const readoutParcel = hoveredParcel ?? selectedParcel;
+  const parcelSummary = `${sectorCount} SECTORS / ${parcels.length} PARCELS`;
 
   useEffect(() => {
     setWebglOk(detectWebGL());
   }, []);
 
+  const handleExpandedChange = (open: boolean) => {
+    setIsExpanded(open);
+    if (!open) setHoveredParcel(undefined);
+  };
+
   return (
-    <div className={`flex flex-col gap-4 ${className}`}>
-      <div className="border border-border bg-card/30">
-        <div className="flex items-center justify-between gap-4 border-b border-border bg-secondary p-4 text-secondary-foreground">
-          <h3 className="font-sans font-black uppercase tracking-tight">Surface Parcels</h3>
-          <span className="font-mono text-[10px] tracking-widest text-muted-foreground">
-            {sectorCount} SECTORS / {parcels.length} PARCELS
-          </span>
-        </div>
-        <div className="relative h-105 overflow-hidden bg-background">
-          {webglOk ? (
-            <CanvasErrorBoundary fallback={<GlobeFallback />}>
-              <Suspense fallback={<GlobeFallback />}>
-                <Canvas
-                  camera={{ position: [0, 0, 3.15], fov: 42 }}
-                  dpr={[1, 1.5]}
-                  gl={{ antialias: true, powerPreference: "high-performance" }}
-                >
-                  <GlobeScene
-                    parcels={parcels}
-                    latitude={latitude}
-                    longitude={longitude}
-                    selectedParcelId={selectedParcelId}
-                    interactive={interactive}
-                    onSelectParcel={onSelectParcel}
-                    onHoverParcel={setHoveredParcel}
-                  />
-                </Canvas>
-              </Suspense>
-            </CanvasErrorBoundary>
-          ) : (
-            <GlobeFallback />
-          )}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-background to-transparent" />
-          <div className="pointer-events-none absolute left-4 top-4 font-mono text-[10px] tracking-widest text-muted-foreground">
-            LAT {latitude.toFixed(2)} / LON {longitude.toFixed(2)}
+    <>
+      <div className={`flex flex-col gap-4 ${className}`}>
+        <div className="border border-border bg-card/30">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border bg-secondary p-4 text-secondary-foreground">
+            <h3 className="font-sans font-black uppercase tracking-tight">Surface Parcels</h3>
+            <div className="ml-auto flex items-center gap-3">
+              <span className="font-mono text-[10px] tracking-widest text-muted-foreground">
+                {parcelSummary}
+              </span>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => setIsExpanded(true)}
+                className="rounded-none border-border bg-background/70 text-foreground hover:border-primary/50 hover:text-primary"
+                aria-label="Open enlarged parcel globe"
+              >
+                <Maximize2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+          <GlobeViewport
+            webglOk={webglOk}
+            parcels={parcels}
+            latitude={latitude}
+            longitude={longitude}
+            selectedParcelId={selectedParcelId}
+            interactive={interactive}
+            onSelectParcel={onSelectParcel}
+            onHoverParcel={setHoveredParcel}
+            heightClass="h-105"
+          />
+          <div className="p-4">
+            <ParcelReadout parcel={readoutParcel} />
           </div>
         </div>
-        <div className="p-4">
-          <ParcelReadout parcel={readoutParcel} />
-        </div>
       </div>
-    </div>
+
+      <Dialog open={isExpanded} onOpenChange={handleExpandedChange}>
+        <DialogContent className="w-[min(96vw,1200px)] max-w-6xl gap-0 border border-border bg-card p-0 sm:rounded-none">
+          <DialogHeader className="gap-2 border-b border-border bg-secondary px-4 py-4 pr-14 text-left">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <DialogTitle className="font-sans font-black uppercase tracking-tight text-secondary-foreground">
+                Expanded Surface Parcels
+              </DialogTitle>
+              <span className="font-mono text-[10px] tracking-widest text-muted-foreground">
+                {parcelSummary}
+              </span>
+            </div>
+            <DialogDescription className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+              Drag to rotate, scroll to zoom, and select parcels without leaving the current workflow.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="grid gap-0 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="border-b border-border lg:border-b-0 lg:border-r">
+              <GlobeViewport
+                webglOk={webglOk}
+                parcels={parcels}
+                latitude={latitude}
+                longitude={longitude}
+                selectedParcelId={selectedParcelId}
+                interactive={interactive}
+                onSelectParcel={onSelectParcel}
+                onHoverParcel={setHoveredParcel}
+                heightClass="h-[60vh] min-h-[420px] max-h-[760px]"
+              />
+            </div>
+
+            <div className="flex flex-col gap-4 bg-card/50 p-4">
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Active Readout
+                </div>
+                <p className="mt-2 font-mono text-xs leading-6 text-muted-foreground">
+                  The enlarged view stays connected to the same parcel selection and coordinate focus as the inline panel.
+                </p>
+              </div>
+              <ParcelReadout parcel={readoutParcel} />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
