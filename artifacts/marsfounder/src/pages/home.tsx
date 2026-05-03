@@ -123,9 +123,6 @@ export default function Home() {
         
         <div className="relative z-10 container mx-auto flex min-h-[90svh] flex-col items-center px-6 text-center hero-text sm:min-h-0">
           <div className="flex flex-1 flex-col items-center justify-center pt-8 sm:pt-0">
-            <div className="mb-6 inline-block -translate-y-12 border border-primary bg-primary/10 px-3 py-1 text-xs font-mono tracking-widest text-primary sm:mb-8 sm:translate-y-0">
-              SYSTEM INITIALIZED • CONNECTION ESTABLISHED
-            </div>
             <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
               Robotic Labor<br/>For Mars
             </h1>
