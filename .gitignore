@@ -44,6 +44,7 @@ Thumbs.db
 # Agent handoff/session artifacts
 chat-session-summaries/
 chat_session_summaries/
+/my-instructions/INSTRUCTIONS.md
 
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
