@@ -122,7 +122,7 @@ export default function Home() {
         <div className="absolute inset-0 z-0 bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat mix-blend-overlay opacity-30" />
         
         <div className="relative z-10 container mx-auto flex min-h-[90svh] flex-col items-center px-6 text-center hero-text sm:min-h-0">
-          <div className="flex flex-1 flex-col items-center justify-center pt-8 sm:pt-0">
+          <div className="flex flex-1 flex-col items-center justify-start pt-20 sm:justify-center sm:pt-0">
             <h1 className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-none mb-6 text-foreground drop-shadow-[0_0_15px_rgba(204,68,34,0.5)]">
               Robotic Labor<br/>For Mars
             </h1>
