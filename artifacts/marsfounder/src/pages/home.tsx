@@ -119,7 +119,20 @@ export default function Home() {
           )}
         </div>
         
-        <div className="absolute inset-0 z-0 bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat mix-blend-overlay opacity-30" />
+        <picture className="pointer-events-none absolute inset-0 z-0 block mix-blend-overlay opacity-30">
+          <source srcSet="/hero-bg.webp" type="image/webp" />
+          <img
+            src="/hero-bg.png"
+            alt=""
+            aria-hidden="true"
+            width={1408}
+            height={768}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="h-full w-full select-none object-cover object-center"
+          />
+        </picture>
         
         <div className="relative z-10 container mx-auto flex min-h-[90svh] flex-col items-center px-6 text-center hero-text sm:min-h-0">
           <div className="flex flex-1 flex-col items-center justify-start pt-20 sm:justify-center sm:pt-0">
