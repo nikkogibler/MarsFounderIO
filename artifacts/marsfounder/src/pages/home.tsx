@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { Link } from "wouter";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import { ChevronDown } from "lucide-react";
 import * as THREE from "three";
@@ -11,19 +11,28 @@ import { CanvasErrorBoundary } from "@/components/canvas-error-boundary";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function Mars() {
+const HERO_FRAME_INTERVAL_MS = 1000 / 12;
+const HERO_STAR_COUNT = 1400;
+
+function Mars({ animated }: { animated: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state, delta) => {
+
+  useEffect(() => {
     if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.05;
+      meshRef.current.rotation.x = 0.2;
+    }
+  }, []);
+
+  useFrame((state) => {
+    if (meshRef.current && animated) {
+      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.08;
       meshRef.current.rotation.x = 0.2;
     }
   });
 
   return (
     <mesh ref={meshRef} position={[0, -2, -5]}>
-      <sphereGeometry args={[4, 32, 32]} />
+      <sphereGeometry args={[4, 20, 20]} />
       <meshStandardMaterial 
         color="#cc4422" 
         roughness={0.9} 
@@ -49,11 +58,82 @@ function detectWebGL(): boolean {
   }
 }
 
+function HeroScene({ animated }: { animated: boolean }) {
+  const { invalidate } = useThree();
+
+  useEffect(() => {
+    invalidate();
+    if (!animated) return;
+
+    const intervalId = window.setInterval(() => {
+      invalidate();
+    }, HERO_FRAME_INTERVAL_MS);
+
+    return () => window.clearInterval(intervalId);
+  }, [animated, invalidate]);
+
+  return (
+    <>
+      <ambientLight intensity={0.2} />
+      <pointLight position={[10, 10, 10]} intensity={1.2} color="#ffa07a" />
+      <Stars
+        radius={80}
+        depth={40}
+        count={HERO_STAR_COUNT}
+        factor={3}
+        saturation={0}
+        fade
+        speed={animated ? 0.15 : 0}
+      />
+      <Mars animated={animated} />
+    </>
+  );
+}
+
+function usePrefersReducedMotion(): boolean {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+    updatePreference();
+
+    mediaQuery.addEventListener?.("change", updatePreference);
+    return () => mediaQuery.removeEventListener?.("change", updatePreference);
+  }, []);
+
+  return prefersReducedMotion;
+}
+
+function usePageVisible(): boolean {
+  const [pageVisible, setPageVisible] = useState(
+    typeof document === "undefined" ? true : document.visibilityState === "visible",
+  );
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    const updateVisibility = () => setPageVisible(document.visibilityState === "visible");
+    updateVisibility();
+    document.addEventListener("visibilitychange", updateVisibility);
+
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
+
+  return pageVisible;
+}
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const valuePropRef = useRef<HTMLElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
   const { data: bots, isLoading: loadingBots } = useListBots();
   const [webglOk, setWebglOk] = useState(false);
+  const [heroInView, setHeroInView] = useState(true);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const pageVisible = usePageVisible();
 
   const scrollToValueProps = () => {
     valuePropRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -61,6 +141,19 @@ export default function Home() {
 
   useEffect(() => {
     setWebglOk(detectWebGL());
+  }, []);
+
+  useEffect(() => {
+    const heroElement = heroRef.current;
+    if (!heroElement || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setHeroInView(entry.isIntersecting),
+      { threshold: 0.2 },
+    );
+
+    observer.observe(heroElement);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -96,10 +189,12 @@ export default function Home() {
     return () => ctx.revert();
   }, []);
 
+  const animateHero = webglOk && !prefersReducedMotion && pageVisible && heroInView;
+
   return (
     <div ref={containerRef} className="w-full flex flex-col">
       {/* Hero Section */}
-      <section className="relative min-h-[90svh] sm:h-[90vh] flex items-start sm:items-center justify-center overflow-hidden border-b border-border">
+      <section ref={heroRef} className="relative min-h-[90svh] sm:h-[90vh] flex items-start sm:items-center justify-center overflow-hidden border-b border-border">
         <div className="absolute inset-0 z-0 opacity-40 mix-blend-screen pointer-events-none">
           {webglOk ? (
             <CanvasErrorBoundary
@@ -107,11 +202,13 @@ export default function Home() {
                 <div className="w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(204,68,34,0.35),transparent_60%)]" />
               }
             >
-              <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-                <ambientLight intensity={0.2} />
-                <pointLight position={[10, 10, 10]} intensity={1.5} color="#ffa07a" />
-                <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-                <Mars />
+              <Canvas
+                frameloop="demand"
+                dpr={[0.75, 1]}
+                camera={{ position: [0, 0, 5], fov: 45 }}
+                gl={{ antialias: false, powerPreference: "low-power" }}
+              >
+                <HeroScene animated={animateHero} />
               </Canvas>
             </CanvasErrorBoundary>
           ) : (
