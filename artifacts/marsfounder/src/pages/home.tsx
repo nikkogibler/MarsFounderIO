@@ -141,7 +141,7 @@ export default function Home() {
           <button
             type="button"
             onClick={scrollToValueProps}
-            className="-mt-2 mb-8 flex -translate-y-8 items-center justify-center text-primary transition-colors duration-300 hover:text-accent sm:mt-0 sm:translate-y-0"
+            className="-mt-2 mb-8 flex -translate-y-8 items-center justify-center text-primary transition-colors duration-300 hover:text-accent sm:hidden"
             aria-label="Scroll to next section"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/35 bg-primary/5 animate-pulse">
