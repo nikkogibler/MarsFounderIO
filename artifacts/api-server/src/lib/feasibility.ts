@@ -1,5 +1,6 @@
 import { openrouter } from "@workspace/integrations-anthropic-ai";
 import type { MissionRow, BuildRow, BotClassRow } from "@workspace/db";
+import { EstimateMissionFeasibilityResponse } from "@workspace/api-zod";
 
 interface FeasibilityInput {
   mission: MissionRow;
@@ -65,6 +66,7 @@ Generate the feasibility report. Strict JSON only.`;
   const response = await openrouter.chat.completions.create({
     model: "deepseek/deepseek-v4-flash",
     max_tokens: 1500,
+    response_format: { type: "json_object" },
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: userPrompt },
@@ -73,16 +75,38 @@ Generate the feasibility report. Strict JSON only.`;
 
   const text = response.choices[0]?.message?.content ?? "";
   const jsonStr = extractJson(text);
-  const parsed = JSON.parse(jsonStr) as FeasibilityReport;
+  const parsed = EstimateMissionFeasibilityResponse.parse(JSON.parse(jsonStr));
 
-  parsed.confidencePercent = clamp(Math.round(parsed.confidencePercent), 0, 100);
-  parsed.estimatedCostCredits = Math.max(0, Math.round(parsed.estimatedCostCredits));
-  parsed.estimatedEnergyKwh = Math.max(0, Math.round(parsed.estimatedEnergyKwh));
-  parsed.estimatedDurationSols = Math.max(1, Math.round(parsed.estimatedDurationSols));
-  if (!Array.isArray(parsed.risks)) parsed.risks = [];
-  if (!Array.isArray(parsed.recommendations)) parsed.recommendations = [];
+  const normalized: FeasibilityReport = {
+    verdict: parsed.verdict,
+    confidencePercent: clamp(Math.round(parsed.confidencePercent), 0, 100),
+    estimatedCostCredits: Math.max(0, Math.round(parsed.estimatedCostCredits)),
+    estimatedEnergyKwh: Math.max(0, Math.round(parsed.estimatedEnergyKwh)),
+    estimatedDurationSols: Math.max(1, Math.round(parsed.estimatedDurationSols)),
+    risks: parsed.risks
+      .slice(0, 5)
+      .map((risk) => ({
+        level: risk.level,
+        category: normalizeModelText(risk.category, 48),
+        description: normalizeModelText(risk.description, 220),
+      }))
+      .filter((risk) => risk.category.length > 0 && risk.description.length > 0),
+    recommendations: parsed.recommendations
+      .slice(0, 4)
+      .map((item) => normalizeModelText(item, 180))
+      .filter((item) => item.length > 0),
+    summary: normalizeModelText(parsed.summary, 360),
+  };
 
-  return parsed;
+  if (
+    normalized.risks.length === 0 ||
+    normalized.recommendations.length === 0 ||
+    normalized.summary.length === 0
+  ) {
+    throw new Error("Model response missing required feasibility content");
+  }
+
+  return EstimateMissionFeasibilityResponse.parse(normalized);
 }
 
 function extractJson(text: string): string {
@@ -96,4 +120,13 @@ function extractJson(text: string): string {
 
 function clamp(n: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, n));
+}
+
+function normalizeModelText(value: string, maxLength: number): string {
+  return value
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, maxLength);
 }

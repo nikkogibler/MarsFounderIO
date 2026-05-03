@@ -38,11 +38,20 @@ Now stay in character.`;
       { role: "user", content: userMessage },
     ],
   }, { timeout: 20_000 });
-  const text = (response.choices[0]?.message?.content ?? "").trim();
+  const text = normalizePersonaText(response.choices[0]?.message?.content ?? "");
   return {
     text: text || "Comms degraded. Try again.",
     audioUrl: null,
     durationMs: Math.max(1200, Math.min(8000, text.length * 55)),
     voiceMocked: VOICE_MOCKED,
   };
+}
+
+function normalizePersonaText(value: string): string {
+  return value
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 280);
 }
