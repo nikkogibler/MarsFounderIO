@@ -104,13 +104,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
               aria-expanded={mobileNavOpen}
             >
               <span
-                className={`block w-5 h-px bg-foreground transition-all duration-200 ${mobileNavOpen ? 'rotate-45 translate-y-[7px]' : ''}`}
+                className={`block w-5 h-px bg-foreground transition-all duration-200 ${mobileNavOpen ? 'rotate-45 translate-y-1.75' : ''}`}
               />
               <span
                 className={`block w-5 h-px bg-foreground transition-all duration-200 ${mobileNavOpen ? 'opacity-0' : ''}`}
               />
               <span
-                className={`block w-5 h-px bg-foreground transition-all duration-200 ${mobileNavOpen ? '-rotate-45 -translate-y-[7px]' : ''}`}
+                className={`block w-5 h-px bg-foreground transition-all duration-200 ${mobileNavOpen ? '-rotate-45 -translate-y-1.75' : ''}`}
               />
             </button>
           </div>
@@ -155,7 +155,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 px-6 py-4 text-sm font-bold tracking-widest uppercase border-b border-border/50 transition-colors min-h-[56px] ${
+              className={`flex items-center gap-3 px-6 py-4 text-sm font-bold tracking-widest uppercase border-b border-border/50 transition-colors min-h-14 ${
                 isActive(href) || (href === '/missions' && location.startsWith('/missions/'))
                   ? 'text-primary bg-primary/5 border-l-2 border-l-primary'
                   : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
@@ -168,7 +168,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <Link
             href="/waitlist"
-            className="mx-6 mt-6 bg-primary text-primary-foreground px-6 py-4 font-bold font-mono uppercase tracking-widest text-center transition-colors hover:bg-accent border border-primary hover:border-accent min-h-[56px] flex items-center justify-center"
+            className="mx-6 mt-6 bg-primary text-primary-foreground px-6 py-4 font-bold font-mono uppercase tracking-widest text-center transition-colors hover:bg-accent border border-primary hover:border-accent min-h-14 flex items-center justify-center"
             onClick={() => setMobileNavOpen(false)}
           >
             Request Access
